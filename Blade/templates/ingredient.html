@@ -1,0 +1,36 @@
+<h1>Ingredients</h1>
+<h2>{{resturant_name}}</h2></br>
+
+<a href="../main/">Back To Home</a>
+
+{% if errors %}
+	{{errors}}
+{% endif %}
+
+<form method="post">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+
+
+
+<table border = "1">
+	<tr>
+	<td>Ingredient</td>
+	<td>Quantity</td>
+	<td>Unit</td>
+	<td>Date Last Changed</td>
+	</tr>
+{% for ingredient,quantity in ingredients.items %}
+    <tr>
+		<td>{{ingredient}}</td>
+	</tr>
+	{% for q, amt, date in quantity %}
+	<tr>
+		<td></td><td>{{q}}</td><td>{{amt}}</td><td>{{date}}</td>
+	</tr>
+	{% endfor %}
+	
+	
+{% endfor %}
+</table>

@@ -1,0 +1,16 @@
+<h1>{{resturant_name}}</h1></br>
+
+<a href="../ingredient/">Ingredients</a>
+
+<ul>
+{% for ingredient in ingredients %}
+    <li>{{ingredient}}</li>
+{% endfor %}
+</ul>
+
+<a href="../recipes/">Recipes</a>
+<ul>
+{% for recipe in recipies %}
+    <li>{{recipe}}</li>
+{% endfor %}
+</ul>
