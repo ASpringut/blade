@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.context_processors import csrf
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
-from inventory.models import UserProfile, Resturant, Ingredient, IngredientQuantity
+from inventory.models import UserProfile, Resturant, Ingredient
 from inventory.InputForms import RegisterForm, LoginForm, IngredientForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -151,17 +151,15 @@ def ingredient(request):
         #try to find ingredients for this resturant
         ingred = list(Ingredient.objects.filter(resturant = rest.id))
         #create a dictionary that maps ingredients to their quantities
-        ing_dict = {}
-        for ing in ingred:
-            quantities = list(IngredientQuantity.objects.filter(ingredient = ing.id))
-            quantities = [qu.to_tuple() for qu in quantities]
-            print( quantities)
-            ing_dict[ing] = quantities
+        #get the tuple form of the ingredients in a list
+        quantities = [ing.to_tuple() for ing in ingred]
+        print( quantities )
+        
         
     except ObjectDoesNotExist:
-        ing_dict=[]
+        quantities = []
         
-    render_dict["ingredients"] = ing_dict  
+    render_dict["ingredients"] = quantities  
 
     #if this wasnt a request to register render the form
     render_dict["form"]=form

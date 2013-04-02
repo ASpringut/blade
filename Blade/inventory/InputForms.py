@@ -1,5 +1,5 @@
 from django.forms import Form, CharField, PasswordInput, EmailField, DecimalField, ChoiceField, ValidationError
-from inventory.models import Resturant, Ingredient, IngredientQuantity
+from inventory.models import Resturant, Ingredient
 
 class RegisterForm(Form):
     username = CharField(max_length=30)
@@ -37,7 +37,7 @@ class LoginForm(Form):
 class IngredientForm(Form):
     name = CharField(max_length=30)
     quantity = DecimalField()
-    unit = ChoiceField(choices=[(IngredientQuantity.GRAM,'Grams'),
-                                (IngredientQuantity.KILOGRAM,'Kilograms'),
-                                (IngredientQuantity.POUND,'Pounds')])
+    unit = ChoiceField(choices=[(Ingredient.GRAM,'Grams'),
+                                (Ingredient.KILOGRAM,'Kilograms'),
+                                (Ingredient.POUND,'Pounds')])
                                 
