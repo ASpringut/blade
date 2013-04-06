@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from Measures.models import Unit
 
 class Resturant(models.Model):
     name = models.CharField(max_length=100)
@@ -16,15 +16,12 @@ class UserProfile(models.Model):
         
 class Ingredient(models.Model):
 
-    GRAM = 'Gram'
-    KILOGRAM = 'Kilogram'
-    POUND = 'Pound'
 
 
     resturant = models.ForeignKey(Resturant)
     name = models.CharField(max_length = 30)
     amount = models.DecimalField(max_digits=6, decimal_places=2)
-    unit = models.CharField(max_length = 10)
+    unit = models.ForeignKey(Unit)
     date_modified = models.DateTimeField(auto_now_add = True)
     
     def __unicode__(self):
@@ -33,7 +30,7 @@ class Ingredient(models.Model):
     def to_tuple(self):
         return (self.name,
                 float(self.amount), 
-                ''.join([self.unit,'s']), 
+                ''.join([self.unit.name,'s']), 
                 self.date_modified.strftime('%d-%m-%y %I:%M %p'))
     
     class Meta:
