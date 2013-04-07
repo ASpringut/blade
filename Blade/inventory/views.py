@@ -7,8 +7,15 @@ from django.template import RequestContext
 from inventory.models import UserProfile, Resturant, Ingredient
 from inventory.InputForms import RegisterForm, LoginForm, IngredientForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required\
+
+
+#import our general utility functions
+import inventory.InventoryUtils as InventoryUtils
+#import helper functions for viewing ingredients
 import inventory.IngredientView as IngredientView
+
+
 
 def index(request):
     return render_to_response('index.html')
@@ -118,12 +125,9 @@ def resturantMain(request):
 def ingredient(request):
 
     render_dict = {}
-    #get the resturant name
-    key = request.user.id
-    prof = UserProfile.objects.get(user=key)
-    rest = prof.resturant
-    #add the name of the resturant to be rendered
-    render_dict["resturant_name"]=rest
+    #add the resturant to be rendered
+    render_dict["resturant_name"]=InventoryUtils.get_rest(request)
+    
     
     #create the form early so it can be replaced if a form 
     #comes back bad
@@ -171,12 +175,8 @@ def ingredient(request):
 @login_required       
 def recipes(request):
     render_dict = {}
-    #get the resturant name
-    key = request.user.id
-    prof = UserProfile.objects.get(user=key)
-    rest = prof.resturant
-    #add the name of the resturant to be rendered
-    render_dict["resturant_name"]=rest
+    #add the resturant to be rendered
+    render_dict["resturant_name"]=InventoryUtils.get_rest(request)
     
     
     #get the first 10 recipes to display and add them to the renderdict
