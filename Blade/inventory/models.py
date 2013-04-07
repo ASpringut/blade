@@ -55,5 +55,5 @@ class RecipeIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient)
     
     amount = models.DecimalField(max_digits=6, decimal_places=2)
-    unit = models.CharField(max_length = 10)
+    unit = models.ForeignKey(Unit)
 

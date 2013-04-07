@@ -5,15 +5,18 @@ from django.core.context_processors import csrf
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
 from inventory.models import UserProfile, Resturant, Ingredient
-from inventory.InputForms import RegisterForm, LoginForm, IngredientForm
+from inventory.InputForms import RegisterForm, LoginForm, IngredientForm, RecipeForm, RecipeIngredientForm
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required\
+from django.contrib.auth.decorators import login_required
 
 
 #import our general utility functions
 import inventory.InventoryUtils as InventoryUtils
 #import helper functions for viewing ingredients
-import inventory.IngredientView as IngredientView
+import inventory.IngredientUtils as IngredientUtils
+#import helper functions for recipies
+import inventory.RecipeUtils as RecipeUtils
+
 
 
 
@@ -125,8 +128,10 @@ def resturantMain(request):
 def ingredient(request):
 
     render_dict = {}
-    #add the resturant to be rendered
-    render_dict["resturant_name"]=InventoryUtils.get_rest(request)
+    #get the resturant
+    rest = InventoryUtils.get_rest(request)
+    #add the resturant to the render dictionary
+    render_dict["resturant_name"]= rest
     
     
     #create the form early so it can be replaced if a form 
@@ -139,7 +144,7 @@ def ingredient(request):
         form=IngredientForm(request.POST)
         if form.is_valid():
             
-            IngredientView.add_ingredient(rest, 
+            IngredientUtils.add_ingredient(rest, 
                                           form.cleaned_data['name'],
                                           form.cleaned_data['quantity'],
                                           form.cleaned_data['unit'])
@@ -154,18 +159,16 @@ def ingredient(request):
     try:
         #try to find ingredients for this resturant
         ingred = list(Ingredient.objects.filter(resturant = rest.id))
-        #create a dictionary that maps ingredients to their quantities
         #get the tuple form of the ingredients in a list
         quantities = [ing.to_tuple() for ing in ingred]
-        print( quantities )
-        
-        
+
+    #if the object does not exist there are not any ingredients 
     except ObjectDoesNotExist:
         quantities = []
         
     render_dict["ingredients"] = quantities  
 
-    #if this wasnt a request to register render the form
+    #add the form to the render dictionary
     render_dict["form"]=form
     render_dict.update(csrf(request))
 
@@ -175,9 +178,15 @@ def ingredient(request):
 @login_required       
 def recipes(request):
     render_dict = {}
-    #add the resturant to be rendered
-    render_dict["resturant_name"]=InventoryUtils.get_rest(request)
     
+    #get the resturant
+    rest = InventoryUtils.get_rest(request)
+    #add the resturant to the render dictionary
+    render_dict["resturant_name"]= rest
+    
+    #create the form
+    recipeform = RecipeForm()
+    ingredientform = RecipeIngredientForm()
     
     #get the first 10 recipes to display and add them to the renderdict
     try:
@@ -185,7 +194,12 @@ def recipes(request):
         recipe_list = list(Ingredient.objects.filter(resturant = rest.id))
     except ObjectDoesNotExist:
         recipe_list=[]
-    render_dict["ingredients"] = recipe_list  
+    render_dict["ingredients"] = recipe_list 
+    
+    render_dict['recipeform'] = recipeform
+    render_dict['ingredientform'] = ingredientform
+    render_dict.update(csrf(request))
+    
         
     return render_to_response("recipes.html",render_dict)
         

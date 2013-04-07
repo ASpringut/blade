@@ -1,6 +1,7 @@
-from django.forms import Form, CharField, PasswordInput, EmailField, DecimalField, ModelChoiceField, ValidationError
-from inventory.models import Resturant, Ingredient
+from django.forms import Form, CharField, PasswordInput, EmailField, DecimalField, ModelChoiceField, ValidationError, Textarea, ModelForm
+from inventory.models import Resturant, Ingredient, Recipe, RecipeIngredient
 from Measures.models import Unit
+
 
 class RegisterForm(Form):
     username = CharField(max_length=30)
@@ -40,4 +41,17 @@ class IngredientForm(Form):
     quantity = DecimalField()
     unit = ModelChoiceField(queryset=Unit.objects.all(),
 							empty_label=None)
-                                
+                            
+
+class RecipeForm(ModelForm):
+    class Meta:
+        model = Recipe
+        exclude = ('resturant',)
+        widgets = {'instruction': Textarea()}
+        
+        
+class RecipeIngredientForm(ModelForm):
+    class Meta:
+        model = RecipeIngredient
+        exclude = ('recipe',)
+    
