@@ -200,19 +200,20 @@ def recipes(request):
             recipe = recipeform.save(commit = False)
             recipe.resturant = rest
             recipe.save()
-
+            
             for form in ing_formset:
-                form.save(commit=False)
-                form.recipe = recipe
-                print(form.recipe)
-                form.save(commit = True)
+                ingredient = form.save(commit = False)
+                ingredient.recipe = recipe
+                print('*********************')
+                print(ingredient.recipe)
+                print('*********************')
+                ingredient.save()
             ing_formset = RecipeIngredientFormset()
 
-
         else:
-            render_dict['recipe_error'] = recipeform.errors
-            render_dict['ingredient_error']=ing_formset.errors
-
+            print(recipeform.errors)
+            print(ing_formset.errors)
+            
             
 
 
