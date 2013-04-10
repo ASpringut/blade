@@ -115,15 +115,15 @@ def resturantMain(request):
             ingredient_list = list(Ingredient.objects.filter(resturant = rest.id))
         except ObjectDoesNotExist:
             ingredient_list=[]
-            
-        #get the recipes
+
+        #get the first 10 recipes
         try:
             recipe_list = list(Recipe.objects.filter(resturant = rest.id))
         except ObjectDoesNotExist:
-            recipe_list =[]
-        
-        render_dict["ingredients"] = ingredient_list
+            recipe_list = []
+
         render_dict["recipes"] = recipe_list
+        render_dict["ingredients"] = ingredient_list
         
         return render_to_response("main.html",render_dict)
             
@@ -197,7 +197,7 @@ def recipes(request):
     ing_formset = RecipeIngredientFormset();
 
     if request.method == 'POST': # If the form has been submitted...
-        print (request.POST)
+
         #parse the recipe form
         recipeform = RecipeForm(request.POST)
         ing_formset = RecipeIngredientFormset(request.POST)
@@ -207,13 +207,16 @@ def recipes(request):
             recipe = recipeform.save(commit = False)
             recipe.resturant = rest
             recipe.save()
-            recipeform = RecipeForm()
             
+            #add all of the ingredients to the db
             for form in ing_formset:
                 ingredient = form.save(commit = False)
                 ingredient.recipe = recipe
                 ingredient.save()
+
+            #replace th forms with new ones so we dont see the same data again
             ing_formset = RecipeIngredientFormset()
+
 
         else:
             print(recipeform.errors)

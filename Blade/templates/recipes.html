@@ -53,25 +53,54 @@ number_of_rows = 1;
 <!-- Add another row to the recipies-->
 function add_row()
 {
+    //get the total number of forms
+    var formCount = parseInt($('#id_form-TOTAL_FORMS').val());
+
     //clone the table row that the form is contained it
     var $form_row_clone = $("#form_row").clone();
 
     //get all of the input fields in the new row
     var $input_fields = $form_row_clone.find("input,select");
 
-    //get the rownumber as a string
-    var row_str = number_of_rows.toString() 
-
-    //for each of the input fields change the row number in id and name
+    //for each of the input fields add the row number to the id
     $input_fields.each(function(){
-       $(this).attr("id", $(this).attr("id").replace(0,row_str));
-       $(this).attr("name", $(this).attr("name").replace(0,row_str));
+       $(this).attr("id", $(this).attr("id").replace(0,formCount));
+       $(this).attr("name", $(this).attr("name").replace(0,formCount));
     });
 
     //also change the id of the form_row because it is bad practice to have duplicate ids
-    $form_row_clone.attr("id", $form_row_clone.attr("id").replace(0,row_str));
+    $form_row_clone.attr("id", $form_row_clone.attr("id")+formCount);
 
-    number_of_rows = number_of_rows +1;
+    //increment the number of forms 
+    $('#id_form-TOTAL_FORMS').val(formCount + 1);
+
+    //add the cloned table row to the table
+    $("#ing_table").append($form_row_clone);
+}
+
+function remove_row()
+{
+    //get the total number of forms
+    var formCount = parseInt($('#id_form-TOTAL_FORMS').val());
+
+    //clone the table row that the form is contained it
+    var $form_row_clone = $("#form_row").clone();
+
+    //get all of the input fields in the new row
+    var $input_fields = $form_row_clone.find("input,select");
+
+    //for each of the input fields add the row number to the id
+    $input_fields.each(function(){
+       $(this).attr("id", $(this).attr("id").replace(0,formCount));
+       $(this).attr("name", $(this).attr("name").replace(0,formCount));
+    });
+
+    //also change the id of the form_row because it is bad practice to have duplicate ids
+    $form_row_clone.attr("id", $form_row_clone.attr("id")+formCount);
+
+    //increment the number of forms 
+    $('#id_form-TOTAL_FORMS').val(formCount + 1);
+    
     //add the cloned table row to the table
     $("#ing_table").append($form_row_clone);
 }
