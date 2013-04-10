@@ -8,7 +8,7 @@ from inventory.models import UserProfile, Resturant, Ingredient
 from inventory.InputForms import RegisterForm, LoginForm, IngredientForm, RecipeForm, RecipeIngredientForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
+from django.forms.formsets import formset_factory
 
 #import our general utility functions
 import inventory.InventoryUtils as InventoryUtils
@@ -186,8 +186,38 @@ def recipes(request):
     
     #create the form
     recipeform = RecipeForm()
-    ingredientform = RecipeIngredientForm()
-    
+    RecipeIngredientFormset = formset_factory(RecipeIngredientForm)
+    ing_formset = RecipeIngredientFormset();
+
+    if request.method == 'POST': # If the form has been submitted...
+
+        #parse the recipe form
+        recipeform = RecipeForm(request.POST)
+        ing_formset = RecipeIngredientFormset(request.POST)
+
+        if recipeform.is_valid() and ing_formset.is_valid():
+            #add the resaurant then save to the db
+            recipe = recipeform.save(commit = False)
+            recipe.resturant = rest
+            recipe.save()
+
+            for form in ing_formset:
+                form.save(commit=False)
+                form.recipe = recipe
+                print(form.recipe)
+                form.save(commit = True)
+            ing_formset = RecipeIngredientFormset()
+
+
+        else:
+            render_dict['recipe_error'] = recipeform.errors
+            render_dict['ingredient_error']=ing_formset.errors
+
+            
+
+
+
+
     #get the first 10 recipes to display and add them to the renderdict
     try:
         #try to find ingredients for this resturant
@@ -197,7 +227,7 @@ def recipes(request):
     render_dict["ingredients"] = recipe_list 
     
     render_dict['recipeform'] = recipeform
-    render_dict['ingredientform'] = ingredientform
+    render_dict['ingredientform'] = ing_formset
     render_dict.update(csrf(request))
     
         

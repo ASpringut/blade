@@ -2,6 +2,9 @@
 <head>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
 </script>
+<script>
+number_of_rows = 1;
+</script>
 
 </head>
 <body>
@@ -20,15 +23,16 @@
 {{ recipeform.as_table }}
 </table>
 
-
+{{ ingredientform.management_form }}
 <table id = "ing_table">
     <tr>
         <td>Ingredient</td><td>Amount</td><td>Unit</td>
     </tr>
-    
-    <tr id = "form_row">
-    {% for boundfield in ingredientform%}
-        <td>{{boundfield}}</td>
+    {% for form in ingredientform%}
+        <tr id = "form_row">
+        {% for boundfield in form%}
+            <td>{{boundfield}}</td>
+        {%endfor%}
     {%endfor%}
     </tr>
 </table>
@@ -46,19 +50,28 @@
 </ul>
 
 <script>
-
+<!-- Add another row to the recipies-->
 function add_row()
 {
+    //clone the table row that the form is contained it
     var $form_row_clone = $("#form_row").clone();
-    var $clone_ing = $form_row_clone.find("#id_ingredient");
-    var $clone_amount = $form_row_clone.find("#id_amount");
-    var $clone_unit = $form_row_clone.find("#id_unit");
-    
-    $clone_ing.attr('id', $clone_ing.attr('id') + '1' );
-    $clone_amount.attr('id', $clone_amount.attr('id') + '1' );
-    $clone_unit.attr('id', $clone_unit.attr('id') + '1' );
-    
-       
+
+    //get all of the input fields in the new row
+    var $input_fields = $form_row_clone.find("input,select");
+
+    //get the rownumber as a string
+    var row_str = number_of_rows.toString() 
+
+    //for each of the input fields add the row number to the id
+    $input_fields.each(function(){
+       $(this).attr("id", $(this).attr("id").replace(0,row_str));
+    });
+
+    //also change the id of the form_row because it is bad practice to have duplicate ids
+    $form_row_clone.attr("id", $form_row_clone.attr("id").replace(0,row_str));
+
+    number_of_rows = number_of_rows +1;
+    //add the cloned table row to the table
     $("#ing_table").append($form_row_clone);
 }
 
