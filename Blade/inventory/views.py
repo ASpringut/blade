@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.context_processors import csrf
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
-from inventory.models import UserProfile, Resturant, Ingredient
+from inventory.models import UserProfile, Resturant, Ingredient, Recipe
 from inventory.InputForms import RegisterForm, LoginForm, IngredientForm, RecipeForm, RecipeIngredientForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -115,8 +115,15 @@ def resturantMain(request):
             ingredient_list = list(Ingredient.objects.filter(resturant = rest.id))
         except ObjectDoesNotExist:
             ingredient_list=[]
+            
+        #get the recipes
+        try:
+            recipe_list = list(Recipe.objects.filter(resturant = rest.id))
+        except ObjectDoesNotExist:
+            recipe_list =[]
         
         render_dict["ingredients"] = ingredient_list
+        render_dict["recipes"] = recipe_list
         
         return render_to_response("main.html",render_dict)
             
@@ -190,7 +197,7 @@ def recipes(request):
     ing_formset = RecipeIngredientFormset();
 
     if request.method == 'POST': # If the form has been submitted...
-
+        print (request.POST)
         #parse the recipe form
         recipeform = RecipeForm(request.POST)
         ing_formset = RecipeIngredientFormset(request.POST)
@@ -200,13 +207,11 @@ def recipes(request):
             recipe = recipeform.save(commit = False)
             recipe.resturant = rest
             recipe.save()
+            recipeform = RecipeForm()
             
             for form in ing_formset:
                 ingredient = form.save(commit = False)
                 ingredient.recipe = recipe
-                print('*********************')
-                print(ingredient.recipe)
-                print('*********************')
                 ingredient.save()
             ing_formset = RecipeIngredientFormset()
 

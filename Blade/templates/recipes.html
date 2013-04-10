@@ -62,9 +62,10 @@ function add_row()
     //get the rownumber as a string
     var row_str = number_of_rows.toString() 
 
-    //for each of the input fields add the row number to the id
+    //for each of the input fields change the row number in id and name
     $input_fields.each(function(){
        $(this).attr("id", $(this).attr("id").replace(0,row_str));
+       $(this).attr("name", $(this).attr("name").replace(0,row_str));
     });
 
     //also change the id of the form_row because it is bad practice to have duplicate ids
