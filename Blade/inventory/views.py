@@ -212,20 +212,23 @@ def recipes(request):
             for form in ing_formset:
                 ingredient = form.save(commit = False)
                 ingredient.recipe = recipe
-                ingredient.save()
+                #dont save if the form is empty
+                #there is no id if the form is empty
+                if ingredient.id:
+                    ingredient.save()
 
             #replace th forms with new ones so we dont see the same data again
             ing_formset = RecipeIngredientFormset()
-
-
+            recipeform = RecipeForm()
+            
         else:
             print(recipeform.errors)
             print(ing_formset.errors)
             
-            
-
-
-
+    #add forms and csrf to dict
+    render_dict['recipeform'] = recipeform
+    render_dict['ingredientform'] = ing_formset
+    render_dict.update(csrf(request))
 
     #get the first 10 recipes to display and add them to the renderdict
     try:
@@ -235,9 +238,7 @@ def recipes(request):
         recipe_list=[]
     render_dict["ingredients"] = recipe_list 
     
-    render_dict['recipeform'] = recipeform
-    render_dict['ingredientform'] = ing_formset
-    render_dict.update(csrf(request))
+
     
         
     return render_to_response("recipes.html",render_dict)

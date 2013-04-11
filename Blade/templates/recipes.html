@@ -28,17 +28,22 @@ number_of_rows = 1;
     <tr>
         <td>Ingredient</td><td>Amount</td><td>Unit</td>
     </tr>
+    
     {% for form in ingredientform%}
-        <tr id = "form_row">
+    <tr id = "form_row", class="form_row">
         {% for boundfield in form%}
             <td>{{boundfield}}</td>
         {%endfor%}
-    {%endfor%}
+        <td>{{form.errors}}</td>
     </tr>
-</table>
+    {%endfor%}
 
-<input type="submit" value="Submit" />
+</table>
 <input type="button" value="Add Ingredient" onclick="add_row();" />
+<input type="button" value="Remove Ingredient" onclick="remove_row();"/>
+<br/>
+<input type="submit" value="Submit" />
+
 </form>
 
 
@@ -73,7 +78,7 @@ function add_row()
 
     //increment the number of forms 
     $('#id_form-TOTAL_FORMS').val(formCount + 1);
-
+    var formCount = parseInt($('#id_form-TOTAL_FORMS').val());
     //add the cloned table row to the table
     $("#ing_table").append($form_row_clone);
 }
@@ -82,28 +87,27 @@ function remove_row()
 {
     //get the total number of forms
     var formCount = parseInt($('#id_form-TOTAL_FORMS').val());
-
-    //clone the table row that the form is contained it
-    var $form_row_clone = $("#form_row").clone();
-
-    //get all of the input fields in the new row
-    var $input_fields = $form_row_clone.find("input,select");
-
-    //for each of the input fields add the row number to the id
-    $input_fields.each(function(){
-       $(this).attr("id", $(this).attr("id").replace(0,formCount));
-       $(this).attr("name", $(this).attr("name").replace(0,formCount));
-    });
-
-    //also change the id of the form_row because it is bad practice to have duplicate ids
-    $form_row_clone.attr("id", $form_row_clone.attr("id")+formCount);
-
-    //increment the number of forms 
-    $('#id_form-TOTAL_FORMS').val(formCount + 1);
     
-    //add the cloned table row to the table
-    $("#ing_table").append($form_row_clone);
+    //only remove rows when there is more than one left
+    if(formCount > 1)
+    {
+        //clone the table row that the form is contained it
+        var $form_row = $("#form_row"+(formCount-1));
+        $form_row.hide();
+        
+        //increment the number of forms 
+        $('#id_form-TOTAL_FORMS').val(formCount-1);
+    }
 }
+
+
+//reset the number of forms when the doument is started
+//this is hacky and should stay around
+$(document).ready(function(){
+    var num_of_rows = $('.form_row').length;
+    alert(num_of_rows);
+    $('#id_form-TOTAL_FORMS').val(num_of_rows);
+});
 
 </script>
  	

@@ -12,5 +12,5 @@ class Unit(models.Model):
 	#abbreviation for the unit
 	abbv = models.CharField(max_length = 10)
 	
-	def __unicode__(self):
+	def __str__(self):
 		return self.name

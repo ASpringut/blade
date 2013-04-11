@@ -5,7 +5,7 @@ from Measures.models import Unit
 class Resturant(models.Model):
     name = models.CharField(max_length=100)
     
-    def __unicode__(self):
+    def __str__(self):
         return self.name
         
 #associates a user to a resturant
@@ -24,7 +24,7 @@ class Ingredient(models.Model):
     unit = models.ForeignKey(Unit)
     date_modified = models.DateTimeField(auto_now_add = True)
     
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
     def to_tuple(self):
@@ -43,7 +43,7 @@ class Recipe(models.Model):
     name = models.CharField(max_length = 30)
     instruction = models.CharField(max_length = 1024)
     
-    def __unicode__(self):
+    def __str__(self):
         return self.name
     
     class Meta:
@@ -56,4 +56,7 @@ class RecipeIngredient(models.Model):
     
     amount = models.DecimalField(max_digits=6, decimal_places=2)
     unit = models.ForeignKey(Unit)
+    
+    def __str__(self):
+        return self.recipe.name+' '+self.ingredient.name+' '+str(self.amount)+self.unit.abbv
 
