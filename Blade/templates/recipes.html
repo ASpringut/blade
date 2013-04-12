@@ -11,7 +11,7 @@ number_of_rows = 1;
 <h1>Recipes</h1>
 <h2>{{resturant_name}}</h2></br>
 
-<a href="../main/">Back To Home</a>
+<a href="/main/">Back To Home</a>
 
 {% if errors %}
 	{{errors}}
@@ -93,7 +93,7 @@ function remove_row()
     {
         //clone the table row that the form is contained it
         var $form_row = $("#form_row"+(formCount-1));
-        $form_row.hide();
+        $form_row.remove();
         
         //increment the number of forms 
         $('#id_form-TOTAL_FORMS').val(formCount-1);
@@ -104,8 +104,7 @@ function remove_row()
 //reset the number of forms when the doument is started
 //this is hacky and should stay around
 $(document).ready(function(){
-    var num_of_rows = $('.form_row').length;
-    alert(num_of_rows);
+    var num_of_rows = $('.form_row').length;  
     $('#id_form-TOTAL_FORMS').val(num_of_rows);
 });
 

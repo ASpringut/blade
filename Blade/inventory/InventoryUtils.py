@@ -1,4 +1,4 @@
-from inventory.models import UserProfile
+from users.models import UserProfile
 
 #given a request get the resturant name of the user
 def get_rest(request):
