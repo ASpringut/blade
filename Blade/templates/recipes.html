@@ -55,7 +55,7 @@ number_of_rows = 1;
 </ul>
 
 <script>
-<!-- Add another row to the recipies-->
+//add another row to the ingredients for the recipes
 function add_row()
 {
     //get the total number of forms
@@ -81,8 +81,12 @@ function add_row()
     var formCount = parseInt($('#id_form-TOTAL_FORMS').val());
     //add the cloned table row to the table
     $("#ing_table").append($form_row_clone);
+    //bind get_valid_units on change to update units on ingredient change
+    $form_row_clone.change(get_valid_units);
+    
 }
 
+//remove a row from the ingredients
 function remove_row()
 {
     //get the total number of forms
@@ -91,21 +95,52 @@ function remove_row()
     //only remove rows when there is more than one left
     if(formCount > 1)
     {
-        //clone the table row that the form is contained it
+        //remove the last form from the document
         var $form_row = $("#form_row"+(formCount-1));
         $form_row.remove();
         
-        //increment the number of forms 
+        //decrement the number of forms 
         $('#id_form-TOTAL_FORMS').val(formCount-1);
     }
 }
 
+//retreive the key of select field passed in and return a list
+//of valid keys for units that can be used with the specified unit
+function get_valid_units(){
 
-//reset the number of forms when the doument is started
-//this is hacky and should stay around
+   var ingredient_id = $(this).find('option:selected').attr('value');
+   //when no ingredient is selected the selector returns ""
+   //change this to 0 to be more consistant in python side of app
+   if (ingredient_id == ""){
+        ingredient_id = 0
+   }
+   /*
+   $.getJSON("/Measures/ajax/getunit",{ingredient = ingredient_id},
+             function(result){
+                $.each(result, function(i){
+                    alert(i);
+                });
+             });
+   
+   alert('break');
+   */
+    
+
+
+}
+
+
+
 $(document).ready(function(){
+
+    //reset the number of forms when the doument is loaded
+    //this is hacky and should probably be done another way
     var num_of_rows = $('.form_row').length;  
     $('#id_form-TOTAL_FORMS').val(num_of_rows);
+    
+    //also bind a get_valid_units as a handler when
+    //the ingredient is changed for every existing ingredient select
+    $("select[id$='ingredient']").change(get_valid_units);
 });
 
 </script>
