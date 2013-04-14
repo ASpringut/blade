@@ -16,7 +16,6 @@ a get request is made to this page with name = 'unit' and value = the id of the
 ingredient to get units for
 '''
 def get_units(request):
-
     #get the ingredient id from the request
     ingredient_id = request.GET['ingredient']
     
@@ -33,7 +32,7 @@ def get_units(request):
         matching_units = Unit.objects.all()
     
     #make a list of the IDs of the matching units
-    unit_id_list = [unit.id for unit in matching_units]
+    unit_id_list = [str(unit.id) for unit in matching_units]
     #convert to json
     json = simplejson.dumps(unit_id_list)
     return HttpResponse(json, mimetype='application/json')
