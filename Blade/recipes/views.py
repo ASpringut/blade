@@ -11,7 +11,7 @@ from inventory.models import Ingredient
 from recipes.models import Recipe, RecipeIngredient
 
 #import our general utility functions
-import inventory.InventoryUtils as InventoryUtils
+import recipes.utils as utils
 
 @login_required       
 def add_recipe(request):
@@ -26,9 +26,17 @@ def add_recipe(request):
     recipeform = RecipeForm()
     RecipeIngredientFormset = formset_factory(RecipeIngredientForm)
     ing_formset = RecipeIngredientFormset();
+    
+    #if we find a recipe pre-populate the forms so we can edit the recipe
+    if request.method == 'GET' and 'recipe' in request.GET:
+        edit_recipe = Recipe.objects.get(id = request.GET['recipe'])
+        recipeform = RecipeForm(instance=edit_recipe)
+        ingredients = RecipeIngredient.objects.filter(recipe=edit_recipe).values()
+        print (ingredients)
+        ing_formset = RecipeIngredientFormset(initial = [ingredients])
 
-    if request.method == 'POST': # If the form has been submitted...
-
+    #if the form has been submitted
+    if request.method == 'POST': 
         #parse the recipe form
         recipeform = RecipeForm(request.POST)
         ing_formset = RecipeIngredientFormset(request.POST)
@@ -57,19 +65,13 @@ def add_recipe(request):
             #this prevents the user from accidentally refreshing
             #and submitting the form twice
             return redirect(add_recipe)
-
-
             
-        else:
-            print(recipeform.errors)
-            print(ing_formset.errors)
             
     #add forms and csrf to dict
     render_dict['recipeform'] = recipeform
     render_dict['ingredientform'] = ing_formset
     render_dict.update(csrf(request))
     
-        
     return render_to_response("recipes.html",render_dict)
         
 
