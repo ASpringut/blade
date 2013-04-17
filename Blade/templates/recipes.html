@@ -26,16 +26,21 @@ number_of_rows = 1;
 {{ ingredientform.management_form }}
 <table id = "ing_table">
     <tr>
-        <td>Ingredient</td><td>Amount</td><td>Unit</td>
+        <td></td>
+        <td>Ingredient</td>
+        <td>Amount</td>
+        <td>Unit</td>
+        <td>Delete</td>
     </tr>
     
     {% for form in ingredientform%}
-    <tr id = "form_row", class="form_row">
+    <tr class="form_row">
         {% for boundfield in form%}
             <td>{{boundfield}}</td>
         {%endfor%}
         <td>{{form.errors}}</td>
     </tr>
+
     {%endfor%}
 
 </table>
@@ -59,26 +64,32 @@ number_of_rows = 1;
 function add_row()
 {
     //get the total number of forms
-    var formCount = parseInt($('#id_form-TOTAL_FORMS').val());
+    var formCount = $('.form_row').length;
 
-    //clone the table row that the form is contained it
-    var $form_row_clone = $("#form_row").clone();
+    //clone the first form row that we find
+    var $form_row_clone = $(".form_row").first().clone();
+
+    //set the selected option of the select box to null
+    $form_row_clone.find("select").val("");
+    //clear the input text
+    $form_row_clone.find("input").val("");
+    //unhide all of the hidden options for units
+    $form_row_clone.find("[name$='unit']").find("option").show();
 
     //get all of the input fields in the new row
     var $input_fields = $form_row_clone.find("input,select");
 
-    //for each of the input fields add the row number to the id
+    //for each of the input fields change the row number in id and name
     $input_fields.each(function(){
        $(this).attr("id", $(this).attr("id").replace(0,formCount));
        $(this).attr("name", $(this).attr("name").replace(0,formCount));
     });
 
-    //also change the id of the form_row because it is bad practice to have duplicate ids
-    $form_row_clone.attr("id", $form_row_clone.attr("id")+formCount);
+    $form_row_clone.find("[id$='id']").removeAttr('value');
+
 
     //increment the number of forms 
-    $('#id_form-TOTAL_FORMS').val(formCount + 1);
-    var formCount = parseInt($('#id_form-TOTAL_FORMS').val());
+    $('#id_recipeingredient_set-TOTAL_FORMS').val(formCount + 1);
     //add the cloned table row to the table
     $("#ing_table").append($form_row_clone);
     //bind get_valid_units on change to update units on ingredient change
@@ -137,14 +148,11 @@ function get_valid_units(){
 
 $(document).ready(function(){
 
-    //reset the number of forms when the doument is loaded
-    //this is hacky and should probably be done another way
-    var num_of_rows = $('.form_row').length;  
-    $('#id_form-TOTAL_FORMS').val(num_of_rows);
     
-    //also bind a get_valid_units as a handler when
+    //bind a get_valid_units as a handler when
     //the ingredient is changed for every existing ingredient select
     $(".form_row").change(get_valid_units);
+
 });
 
 </script>

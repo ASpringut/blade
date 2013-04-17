@@ -1,8 +1,6 @@
-from recipes.models import Recipe, RecipeIngredient
+from recipes.models import RecipeIngredient
 
-'''
-Gets the initial formset data for a recipe
-'''
-def get_init_formset(recipes):
-    
-    return False  
+def ing_formset_inital(recipe):
+
+    #get the relevant ingredients
+    print(recipe.get_ingredients())

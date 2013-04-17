@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.forms.formsets import formset_factory
+from django.forms.models import inlineformset_factory
 from django.core.context_processors import csrf
 from django.core.exceptions import ObjectDoesNotExist 
 from django.shortcuts import render_to_response, redirect
@@ -10,7 +11,9 @@ from recipes.InputForms import RecipeForm, RecipeIngredientForm
 from inventory.models import Ingredient
 from recipes.models import Recipe, RecipeIngredient
 
+
 #import our general utility functions
+import inventory.InventoryUtils as InventoryUtils
 import recipes.utils as utils
 
 @login_required       
@@ -24,54 +27,59 @@ def add_recipe(request):
     
     #create the form
     recipeform = RecipeForm()
-    RecipeIngredientFormset = formset_factory(RecipeIngredientForm)
+    RecipeIngredientFormset = inlineformset_factory(Recipe, RecipeIngredient)
     ing_formset = RecipeIngredientFormset();
-    
-    #if we find a recipe pre-populate the forms so we can edit the recipe
-    if request.method == 'GET' and 'recipe' in request.GET:
-        edit_recipe = Recipe.objects.get(id = request.GET['recipe'])
-        recipeform = RecipeForm(instance=edit_recipe)
-        ingredients = RecipeIngredient.objects.filter(recipe=edit_recipe).values()
-        print (ingredients)
-        ing_formset = RecipeIngredientFormset(initial = [ingredients])
 
-    #if the form has been submitted
-    if request.method == 'POST': 
+    #if we receive information about a recipe to load
+    if request.method == 'GET' and 'recipe' in request.GET:
+
+        #get the recipe being requested
+        recipe_key = request.GET['recipe']
+        recipe = Recipe.objects.get(id = recipe_key)
+        #load the recipe into the form
+        recipeform = RecipeForm(instance = recipe)
+        ing_formset = RecipeIngredientFormset(instance = recipe);
+
+    # If the form has been submitted
+    if request.method == 'POST':
+
         #parse the recipe form
         recipeform = RecipeForm(request.POST)
-        ing_formset = RecipeIngredientFormset(request.POST)
+        
+        if recipeform.is_valid():
 
-        if recipeform.is_valid() and ing_formset.is_valid():
-            #add the resaurant then save to the db
+            #add the resaurant then temporarily save
             recipe = recipeform.save(commit = False)
             recipe.resturant = rest
-            recipe.save()
-            
-            #add all of the ingredients to the db
-            for form in ing_formset:
-                ingredient = form.save(commit = False)
-                ingredient.recipe = recipe
-                #dont save if the form is empty
-                #there is no recipe if the amount is empty
-                if ingredient.amount:
-                    print('saving')
-                    ingredient.save()
+            recipe = recipeform.save()
+            #create the formset with the recipe 
+            ing_formset = RecipeIngredientFormset(request.POST,
+                                                  instance = recipe)
 
-            #replace th forms with new ones so we dont see the same data again
-            ing_formset = RecipeIngredientFormset()
-            recipeform = RecipeForm()
+            #if the formset is valid and therefore both are 
+            #valid
+            if ing_formset.is_valid():
 
-            #redirect to the version of this page but without the post data
-            #this prevents the user from accidentally refreshing
-            #and submitting the form twice
-            return redirect(add_recipe)
-            
+                #once we know the full transaction is good
+                #we can save the recipe to the database
+                recipe.save()
+                
+                #and the ingredients
+                ing_formset.save()
+
+                #redirect to the version of this page but without the post data
+                #this prevents the user from accidentally refreshing
+                #and submitting the form twice
+                return redirect(add_recipe)
+
+
             
     #add forms and csrf to dict
     render_dict['recipeform'] = recipeform
     render_dict['ingredientform'] = ing_formset
     render_dict.update(csrf(request))
     
+        
     return render_to_response("recipes.html",render_dict)
         
 

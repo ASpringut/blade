@@ -10,6 +10,10 @@ class Recipe(models.Model):
     
     def __str__(self):
         return self.name
+
+    def get_ingredients(self):
+        ingredients = RecipeIngredient.objects.filter(recipe = self.id)
+        return ingredients
     
     class Meta:
         ordering = ('name',)
