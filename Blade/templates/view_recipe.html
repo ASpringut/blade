@@ -1,0 +1,31 @@
+<html>
+
+<head>
+</head>
+
+<body>
+
+    <h1>{{restaurant_name}}</h1>
+
+    <h2>{{recipe.name}}<h3>
+
+
+
+    <table>
+        <tr>
+            <td> Ingredient </td>
+            <td> Amount </td>
+        </tr>
+        {%for ingredient in ingredients%}
+        <tr>
+            <td>{{ingredient.amount}} {{ingredient.unit.abbv}}</td>
+            <td>{{ingredient.ingredient}}</td>
+        </tr>
+        {%endfor%}
+    </table>
+
+    <p>{{recipe.instruction}}</p>
+
+</body>
+
+</html>

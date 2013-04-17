@@ -4,6 +4,8 @@ from recipes.views import *
 
 urlpatterns = patterns('',
 
-    url(r'^recipe/$', recipes),
+    url(r'^add/$', add_recipe),
+    url(r'^view/$', view_recipes),
+    url(r'^view_recipe/$', view_recipe),
     
 )

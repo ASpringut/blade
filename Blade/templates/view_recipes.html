@@ -1,0 +1,29 @@
+<html>
+
+<head>
+</head>
+
+<body>
+
+    <h1>{{restaurant_name}}</h1>
+
+    <a href = '/main'> Return Home </a>
+
+    <h2>Recipes</h2>
+
+    <a = href='../add'> Add Recipe </a>
+
+    <ul>    
+    {%for recipe in recipes%}
+        <li>
+            <a href='../view_recipe?recipe={{recipe.id}}'>
+            {{recipe}}
+            </a>
+        </li>
+    {%endfor%}
+    <ul>
+
+
+</body>
+
+</html>
