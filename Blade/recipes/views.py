@@ -43,8 +43,17 @@ def add_recipe(request):
     # If the form has been submitted
     if request.method == 'POST':
 
-        #parse the recipe form
-        recipeform = RecipeForm(request.POST)
+        #if we have a recipe id we are editing an old model
+        if 'recipe' in request.GET:
+            recipe = Recipe.objects.get(id = request.GET['recipe'])
+            print(recipe)
+            #parse the recipe form
+            recipeform = RecipeForm(request.POST, instance = recipe)
+        #otherwise we are adding a new model
+        else:
+            recipeform = RecipeForm(request.POST)
+
+
         
         if recipeform.is_valid():
 
