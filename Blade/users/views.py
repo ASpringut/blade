@@ -7,7 +7,7 @@ from django.http import HttpResponse
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from inventory.models import Resturant, Ingredient
+from inventory.models import Restaurant, Ingredient
 from recipes.models import Recipe
 #import user management models
 from django.contrib.auth.models import User
@@ -69,12 +69,12 @@ def register(request):
                                             form.cleaned_data['Password'])
                                             
             #create a new resutrant, no danger of doubles as we already checked 
-            r = Resturant(name = form.cleaned_data['Resturant_Name'])
+            r = Restaurant(name = form.cleaned_data['Restaurant_Name'])
             r.save()
             
-            #associate the user with their resturant
+            #associate the user with their restaurant
             user_prof = UserProfile(user=u,
-                                    resturant = r)
+                                    restaurant = r)
             user_prof.save()
             
             return HttpResponse("Thanks for registering.")
@@ -95,28 +95,28 @@ def index(request):
     return render_to_response('index.html')
     
 
-def resturantMain(request):
+def restaurantMain(request):
     
     if request.user.is_authenticated():
     
         render_dict = {}
-        #get the resturant name
+        #get the restaurant name
         key = request.user.id
         prof = UserProfile.objects.get(user=key)
-        rest = prof.resturant
-        #add the name of the resturant to be rendered
-        render_dict["resturant_name"]=rest
+        rest = prof.restaurant
+        #add the name of the restaurant to be rendered
+        render_dict["restaurant_name"]=rest
         
         #get the first 10 ingredients
         try:
-            #try to find ingredients for this resturant
-            ingredient_list = list(Ingredient.objects.filter(resturant = rest.id))
+            #try to find ingredients for this restaurant
+            ingredient_list = list(Ingredient.objects.filter(restaurant = rest.id))
         except ObjectDoesNotExist:
             ingredient_list=[]
 
         #get the first 10 recipes
         try:
-            recipe_list = list(Recipe.objects.filter(resturant = rest.id))
+            recipe_list = list(Recipe.objects.filter(restaurant = rest.id))
         except ObjectDoesNotExist:
             recipe_list = []
 

@@ -19,13 +19,15 @@
 	<td>Ingredient</td>
 	<td>Quantity</td>
 	<td>Unit</td>
+	<td>Cost / Unit</td>
 	<td>Date Last Changed</td>
 	</tr>
-{% for name,amt,unit,date in ingredients %}
+{% for name,amt,unit,cost,date in ingredients %}
     <tr>
 		<td>{{name}}</td>
 		<td>{{amt}}</td>
 		<td>{{unit}}</td>
+		<td>{{cost}}</td>
 		<td>{{date}}</td>
 
 	</tr>

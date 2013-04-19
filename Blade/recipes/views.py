@@ -20,10 +20,10 @@ import recipes.utils as utils
 def add_recipe(request):
     render_dict = {}
     
-    #get the resturant
+    #get the restaurant
     rest = InventoryUtils.get_rest(request)
-    #add the resturant to the render dictionary
-    render_dict["resturant_name"]= rest
+    #add the restaurant to the render dictionary
+    render_dict["restaurant_name"]= rest
     
     #create the form
     recipeform = RecipeForm()
@@ -59,7 +59,7 @@ def add_recipe(request):
 
             #add the resaurant then temporarily save
             recipe = recipeform.save(commit = False)
-            recipe.resturant = rest
+            recipe.restaurant = rest
             recipe = recipeform.save()
             #create the formset with the recipe 
             ing_formset = RecipeIngredientFormset(request.POST,
@@ -89,7 +89,7 @@ def add_recipe(request):
     render_dict.update(csrf(request))
     
         
-    return render_to_response("recipes.html",render_dict)
+    return render_to_response("add_recipe.html",render_dict)
         
 
 
@@ -98,18 +98,19 @@ def view_recipes(request):
 
     render_dict = {}
 
-    #get the resturant
+    #get the restaurant
     rest = InventoryUtils.get_rest(request)
-    #add the resturant to the render dictionary
+    #add the restaurant to the render dictionary
     render_dict["restaurant_name"]= rest
 
     #get the first 10 recipes to display and add them to the renderdict
     try:
-        recipe_list = list(Recipe.objects.filter(resturant = rest.id))
+        recipe_list = list(Recipe.objects.filter(restaurant = rest.id))
     except ObjectDoesNotExist:
         recipe_list=[]
 
     render_dict["recipes"] = recipe_list
+
 
     return render_to_response("view_recipes.html",render_dict)
 
@@ -127,9 +128,9 @@ def view_recipe(request):
         return redirect(view_recipes)
 
 
-    #get the resturant
+    #get the restaurant
     rest = InventoryUtils.get_rest(request)
-    #add the resturant to the render dictionary
+    #add the restaurant to the render dictionary
     render_dict["restaurant_name"]= rest
 
     try:
@@ -141,8 +142,6 @@ def view_recipe(request):
     #get all of the ingredients
     ingredients = list(RecipeIngredient.objects.filter(recipe=recipe))
     render_dict["ingredients"] = ingredients
-    
-
 
     #add it to the render dict
     render_dict['recipe'] = recipe

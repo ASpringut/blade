@@ -1,14 +1,12 @@
-from django.forms import Form, CharField, PasswordInput, EmailField, DecimalField, ModelChoiceField, ValidationError, Textarea, ModelForm
-from inventory.models import Resturant, Ingredient
+from django.forms import Form, ModelForm, CharField, PasswordInput, EmailField, DecimalField, ModelChoiceField, ValidationError, Textarea, ModelForm
+from inventory.models import Restaurant, Ingredient
 from Measures.models import Unit
 
 
     
-class IngredientForm(Form):
-    name = CharField(max_length=30)
-    quantity = DecimalField()
-    unit = ModelChoiceField(queryset=Unit.objects.all(),
-							empty_label=None)
-                            
+class IngredientForm(ModelForm):
+    class Meta:
+        model = Ingredient
+        exclude = ('restaurant', 'date_modified')
 
     

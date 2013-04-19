@@ -9,7 +9,7 @@ from users.models import UserProfile
 from django.core.context_processors import csrf
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
-from inventory.models import Resturant, Ingredient
+from inventory.models import Restaurant, Ingredient
 from recipes.models import Recipe
 from inventory.InputForms import IngredientForm
 
@@ -26,10 +26,10 @@ import inventory.IngredientUtils as IngredientUtils
 def ingredient(request):
 
     render_dict = {}
-    #get the resturant
+    #get the restaurant
     rest = InventoryUtils.get_rest(request)
-    #add the resturant to the render dictionary
-    render_dict["resturant_name"]= rest
+    #add the restaurant to the render dictionary
+    render_dict["restaurant_name"]= rest
     
     
     #create the form early so it can be replaced if a form 
@@ -42,11 +42,11 @@ def ingredient(request):
         form=IngredientForm(request.POST)
         if form.is_valid():
             
-            IngredientUtils.add_ingredient(rest, 
-                                          form.cleaned_data['name'],
-                                          form.cleaned_data['quantity'],
-                                          form.cleaned_data['unit'])
-        
+            ingredient = form.save(commit = False)
+            ingredient.restaurant = rest
+            ingredient.save()
+            
+
         else:
             #if it failed add the errors to the render dictionary
             render_dict["errors"] = form.errors.__unicode__()
@@ -55,8 +55,8 @@ def ingredient(request):
             
     #get the first 10 ingredients to display and add them to the renderdict
     try:
-        #try to find ingredients for this resturant
-        ingred = list(Ingredient.objects.filter(resturant = rest.id))
+        #try to find ingredients for this restaurant
+        ingred = list(Ingredient.objects.filter(restaurant = rest.id))
         #get the tuple form of the ingredients in a list
         quantities = [ing.to_tuple() for ing in ingred]
 
