@@ -13,7 +13,7 @@ from recipes.models import Recipe, RecipeIngredient
 
 
 #import our general utility functions
-import inventory.InventoryUtils as InventoryUtils
+import inventory.utils as InventoryUtils
 import recipes.utils as utils
 
 @login_required       

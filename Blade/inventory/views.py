@@ -16,10 +16,7 @@ from django.forms.models import modelformset_factory
 from django.contrib.auth.decorators import login_required
 
 #import our general utility functions
-import inventory.InventoryUtils as InventoryUtils
-#import helper functions for viewing ingredients
-import inventory.IngredientUtils as IngredientUtils
-
+import inventory.utils as utils
 
         
 @login_required
@@ -27,7 +24,7 @@ def ingredient(request):
 
     render_dict = {}
     #get the restaurant
-    rest = InventoryUtils.get_rest(request)
+    rest = utils.get_rest(request)
     #add the restaurant to the render dictionary
     render_dict["restaurant_name"]= rest
     
@@ -42,9 +39,7 @@ def ingredient(request):
         form=IngredientForm(request.POST)
         if form.is_valid():
             
-            ingredient = form.save(commit = False)
-            ingredient.restaurant = rest
-            ingredient.save()
+            utils.add_ingredient(rest, form)
             
 
         else:
@@ -75,6 +70,11 @@ def ingredient(request):
 @login_required
 def add_ingredients(request):
     render_dict = {}
+    #get the restaurant
+    rest = utils.get_rest(request)
+    #add the restaurant to the render dictionary
+    render_dict["restaurant_name"]= rest
+    
 
     #create a formset, no restaurant because we should set that based
     #on the current login, also you dont want users touching other users'
@@ -82,10 +82,22 @@ def add_ingredients(request):
     IngredientFormset = modelformset_factory(Ingredient, 
                                              exclude=('restaurant',),
                                              extra=5)
-                                                                      
+
     #this page should be for adding ingredients only
-    form = IngredientFormset(queryset=Ingredient.objects.none())
-    render_dict['formset'] = form
+    formset = IngredientFormset(queryset=Ingredient.objects.none())
+
+    if request.method == 'POST':
+        formset = IngredientFormset(request.POST)
+        if formset.is_valid():
+            for form in formset:
+                utils.add_ingredient(rest, form)
+
+            #if everything is valid we are done and should redirect back to
+            #the viewing page
+            return redirect(ingredient)
+
+    
+    render_dict['formset'] = formset
     render_dict.update(csrf(request))
 
     #create a formset for ingredients
