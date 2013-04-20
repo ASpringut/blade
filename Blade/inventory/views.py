@@ -12,7 +12,7 @@ from django.template import RequestContext
 from inventory.models import Restaurant, Ingredient
 from recipes.models import Recipe
 from inventory.InputForms import IngredientForm
-
+from django.forms.models import modelformset_factory
 from django.contrib.auth.decorators import login_required
 
 #import our general utility functions
@@ -72,3 +72,21 @@ def ingredient(request):
 
     return render_to_response("ingredient.html",render_dict)
         
+@login_required
+def add_ingredients(request):
+    render_dict = {}
+
+    #create a formset, no restaurant because we should set that based
+    #on the current login, also you dont want users touching other users'
+    #restaurants
+    IngredientFormset = modelformset_factory(Ingredient, 
+                                             exclude=('restaurant',),
+                                             extra=5)
+                                                                      
+    #this page should be for adding ingredients only
+    form = IngredientFormset(queryset=Ingredient.objects.none())
+    render_dict['formset'] = form
+    render_dict.update(csrf(request))
+
+    #create a formset for ingredients
+    return render_to_response('add_ingredients.html', render_dict)

@@ -1,0 +1,32 @@
+<html>
+<head>
+</head>
+
+
+<body>
+<h1>{{restaruant}}</h1>
+
+<h2>Add ingredients</h2>
+
+<form method="post">{% csrf_token %}
+	<table >
+		<tr>
+			<td>Name</td>
+			<td>Amount</td>
+			<td>Unit</td>
+			<td>Cost per Unit</td>
+		</tr>
+	{%for form in formset%}
+		<tr class='form_row'>
+		{%for field in form%}
+			<td>{{field}}</td>
+		{%endfor%}
+		</tr>
+	{%endfor%}
+	<table>
+<input type="submit" value="Submit" />
+</form>
+
+</body>
+
+</html>
