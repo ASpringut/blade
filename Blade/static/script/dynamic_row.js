@@ -1,65 +1,3 @@
-
-<head>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
-</script>
-<script>
-number_of_rows = 1;
-</script>
-
-</head>
-<body>
-<h1>Recipes</h1>
-<h2>{{resturant_name}}</h2></br>
-
-<a href="/main/">Back To Home</a>
-
-{% if errors %}
-	{{errors}}
-{% endif %}
-
-
-<form method="post">{% csrf_token %}
-<table>
-{{ recipeform.as_table }}
-</table>
-
-{{ ingredientform.management_form }}
-<table id = "ing_table">
-    <tr>
-        <td></td>
-        <td>Ingredient</td>
-        <td>Amount</td>
-        <td>Unit</td>
-        <td>Delete</td>
-    </tr>
-    
-    {% for form in ingredientform%}
-    <tr class="form_row">
-        {% for boundfield in form%}
-            <td>{{boundfield}}</td>
-        {%endfor%}
-        <td>{{form.errors}}</td>
-    </tr>
-
-    {%endfor%}
-
-</table>
-<input type="button" value="Add Ingredient" onclick="add_row();" />
-<input type="button" value="Remove Ingredient" onclick="remove_row();"/>
-<br/>
-<input type="submit" value="Submit" />
-
-</form>
-
-
-
-<ul>
-{% for recipe in recipes %}
-    <li>{{recipe}}</li>
-{% endfor %}
-</ul>
-
-<script>
 //add another row to the ingredients for the recipes
 function add_row()
 {
@@ -85,7 +23,6 @@ function add_row()
        $(this).attr("name", $(this).attr("name").replace(0,formCount));
     });
 
-    //remove the id from the row if there is one
     $form_row_clone.find("[id$='id']").removeAttr('value');
 
 
@@ -104,16 +41,15 @@ function remove_row()
     //get the total number of forms
     var formCount = $('.form_row').length;
 
-    
     //only remove rows when there is more than one left
     if(formCount > 1)
     {
         //remove the last form from the document
-        var $form_row = $("#form_row"+(formCount-1));
+        var $form_row = $(".form_row").last();
         $form_row.remove();
         
         //decrement the number of forms 
-        $('#id_form-TOTAL_FORMS').val(formCount-1);
+        $('#id_recipeingredient_set-TOTAL_FORMS').val(formCount - 1);
     }
 }
 
@@ -147,16 +83,3 @@ function get_valid_units(){
              });
 }
 
-
-$(document).ready(function(){
-
-    
-    //bind a get_valid_units as a handler when
-    //the ingredient is changed for every existing ingredient select
-    $(".form_row").change(get_valid_units);
-
-});
-
-</script>
- 	
-</body>
