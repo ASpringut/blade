@@ -11,8 +11,8 @@ function add_row()
     $form_row_clone.find("select").val("");
     //clear the input text
     $form_row_clone.find("input").val("");
-    //unhide all of the hidden options for units
-    $form_row_clone.find("[name$='unit']").find("option").show();
+    //unhide all of the hidden options for selectors
+    $form_row_clone.find("select").find("option").show();
 
     //get all of the input fields in the new row
     var $input_fields = $form_row_clone.find("input,select");
@@ -25,11 +25,10 @@ function add_row()
 
     $form_row_clone.find("[id$='id']").removeAttr('value');
 
-
     //increment the number of forms 
-    $('#id_recipeingredient_set-TOTAL_FORMS').val(formCount + 1);
+    $('[id$=TOTAL_FORMS]').val(formCount + 1);
     //add the cloned table row to the table
-    $("#ing_table").append($form_row_clone);
+    $(".form_row_table").append($form_row_clone);
     //bind get_valid_units on change to update units on ingredient change
     $form_row_clone.change(get_valid_units);
     

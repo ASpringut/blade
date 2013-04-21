@@ -1,5 +1,8 @@
 <html>
 <head>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+</script>	
+<script src = '/static/script/dynamic_row.js'></script>
 </head>
 
 
@@ -9,7 +12,7 @@
 <h2>Add ingredients</h2>
 
 <form method="post">{% csrf_token %}
-	<table >
+	<table class = "form_row_table">
 		<tr>
 			<td>Name</td>
 			<td>Amount</td>
@@ -24,8 +27,11 @@
 			<td>{{form.errors}}</td>
 		</tr>
 	{%endfor%}
-	{{ formset.management_form }}
 	<table>
+{{ formset.management_form }}
+<input type="button" value="Add Ingredient" onclick="add_row();" />
+<input type="button" value="Remove Ingredient" onclick="remove_row();"/>
+<br/>
 <input type="submit" value="Submit" />
 </form>
 

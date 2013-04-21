@@ -24,7 +24,7 @@ number_of_rows = 1;
 </table>
 
 {{ ingredientform.management_form }}
-<table id = "ing_table">
+<table class = "form_row_table">
     <tr>
         <td></td>
         <td>Ingredient</td>
@@ -65,7 +65,6 @@ number_of_rows = 1;
 <script>
 $(document).ready(function(){
 
-    
     //bind a get_valid_units as a handler when
     //the ingredient is changed for every existing ingredient select
     $(".form_row").change(get_valid_units);
