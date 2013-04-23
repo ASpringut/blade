@@ -36,30 +36,27 @@ def ingredient(request):
 
     #Deal with the ingredient add form
     if request.method == 'POST': # If the form has been submitted...
-        form=IngredientForm(request.POST)
-        if form.is_valid():
-            
-            utils.add_ingredient(rest, form)
-            
+        #if the quickadd form was submitted
+        if "quickadd" in request.POST:
+            form=IngredientForm(request.POST)
+            if form.is_valid():          
+                utils.add_ingredient(rest, form)
+        
+        #if the delete form was submitted
+        elif "delete" in request.POST:
+            utils.delete_ingredients(request.POST)
 
-        else:
-            #if it failed add the errors to the render dictionary
-            render_dict["errors"] = form.errors.__unicode__()
 
-            
-            
     #get the first 10 ingredients to display and add them to the renderdict
     try:
         #try to find ingredients for this restaurant
         ingred = list(Ingredient.objects.filter(restaurant = rest.id))
-        #get the tuple form of the ingredients in a list
-        quantities = [ing.to_tuple() for ing in ingred]
 
     #if the object does not exist there are not any ingredients 
     except ObjectDoesNotExist:
-        quantities = []
+        ingred = []
         
-    render_dict["ingredients"] = quantities  
+    render_dict["ingredients"] = ingred  
 
     #add the form to the render dictionary
     render_dict["form"]=form

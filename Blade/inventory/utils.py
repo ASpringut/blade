@@ -41,3 +41,7 @@ def add_ingredient(rest, form):
 	except KeyError:
 		#there is nothing we need to do for a blank row
 		pass
+
+#pass in the post dict of the request
+def delete_ingredients(post):
+	print("deleting ingredients")
