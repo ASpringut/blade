@@ -41,10 +41,12 @@ def ingredient(request):
             form=IngredientForm(request.POST)
             if form.is_valid():          
                 utils.add_ingredient(rest, form)
+                #return to page after redirect
+                return redirect(ingredient_redirect)
         
         #if the delete form was submitted
         elif "delete" in request.POST:
-            utils.delete_ingredients(request.POST)
+            utils.delete_ingredients(rest, request.POST)
 
 
     #get the first 10 ingredients to display and add them to the renderdict
@@ -99,3 +101,8 @@ def add_ingredients(request):
 
     #create a formset for ingredients
     return render_to_response('add_ingredients.html', render_dict)
+
+#page to return that immediately redirects to ingredient to hide POST data
+#submission from the user
+def ingredient_redirect(request):
+    return redirect(ingredient)

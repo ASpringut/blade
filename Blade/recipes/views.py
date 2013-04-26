@@ -103,14 +103,19 @@ def view_recipes(request):
     #add the restaurant to the render dictionary
     render_dict["restaurant_name"]= rest
 
-    #get the first 10 recipes to display and add them to the renderdict
+    if request.method == "POST":
+        #the only form on the page is the delete form, delete the requested recipes
+        utils.delete_recipe(rest,request.POST)
+
+    #get the recipes to display and add them to the renderdict
     try:
         recipe_list = list(Recipe.objects.filter(restaurant = rest.id))
     except ObjectDoesNotExist:
         recipe_list=[]
 
     render_dict["recipes"] = recipe_list
-
+    #add the csrf form for deleting recipes
+    render_dict.update(csrf(request))
 
     return render_to_response("view_recipes.html",render_dict)
 

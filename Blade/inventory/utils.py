@@ -43,5 +43,13 @@ def add_ingredient(rest, form):
 		pass
 
 #pass in the post dict of the request
-def delete_ingredients(post):
-	print("deleting ingredients")
+def delete_ingredients(rest, post):
+	delete_list = post.getlist('delete_ingredient')
+	#convert the list to ingredient objects 
+	delete_list = [Ingredient.objects.get(pk=int(ing_id)) for ing_id in delete_list]
+	for ing in delete_list:
+		#check if the ingredient belongs to the restaurant of the current user
+		if (ing.restaurant == rest):
+			#delete the ingredients
+			ing.delete()			
+
