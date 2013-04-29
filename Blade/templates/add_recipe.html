@@ -1,13 +1,15 @@
-
-<head>
+{% extends "base.html" %}
+{% block head%}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
 </script>
 <script>
 number_of_rows = 1;
 </script>
 
-</head>
-<body>
+{% endblock %} 
+
+
+{% block content%}
 <h1>Recipes</h1>
 <h2>{{resturant_name}}</h2></br>
 
@@ -73,4 +75,4 @@ $(document).ready(function(){
 
 </script>
  	
-</body>
+{% endblock %} 

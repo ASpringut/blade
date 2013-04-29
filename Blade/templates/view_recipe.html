@@ -1,13 +1,7 @@
-<html>
+{% extends "base.html" %}
+{% block content%}
 
-<head>
-</head>
-
-<body>
-
-    <h1>{{restaurant_name}}</h1>
-
-    <h2>{{recipe.name}}<h3>
+    <h2>{{recipe.name}}</h2>
 
 
 
@@ -15,7 +9,7 @@
         <tr>
             <td> Ingredient </td>
             <td> Amount </td>
-            <td>Cost  </td>
+            <td> Cost  </td>
             <td> Cost per unit</td>
         </tr>
         {%for ingredient in ingredients%}
@@ -36,6 +30,5 @@
 
     <p>{{recipe.instruction}}</p>
 
-</body>
 
-</html>
+{% endblock %} 

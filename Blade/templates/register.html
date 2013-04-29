@@ -1,3 +1,6 @@
+
+{% extends "base.html" %}
+{% block content%}
 <h3>Input user information</h3>
 
 {% if errors %}
@@ -9,3 +12,5 @@
 {{ form.as_p }}
 <input type="submit" value="Submit" />
 </form>
+
+{% endblock %}  

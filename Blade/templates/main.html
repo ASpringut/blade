@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+
+{% block content%}
 <h1>{{resturant_name}}</h1></br>
 
 <a href="/inventory/view/">Ingredients</a>
@@ -14,3 +18,5 @@
     <li>{{recipe}}</li>
 {% endfor %}
 </ul>
+
+{% endblock %}

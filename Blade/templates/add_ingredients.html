@@ -1,14 +1,13 @@
-<html>
-<head>
+{% extends "base.html" %}
+{% block head%}
+
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
 </script>	
 <script src = '/static/script/dynamic_row.js'></script>
-</head>
+{% endblock %} 
 
 
-<body>
-<h1>{{restaurant_name}}</h1>
-
+{% block content%}
 <h2>Add ingredients</h2>
 
 <form method="post">{% csrf_token %}
@@ -35,6 +34,4 @@
 <input type="submit" value="Submit" />
 </form>
 
-</body>
-
-</html>
+{% endblock %} 

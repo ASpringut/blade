@@ -1,3 +1,6 @@
+
+{% extends "base.html" %}
+{% block content%}
 <h1>Ingredients</h1>
 <h2>{{resturant_name}}</h2></br>
 
@@ -40,5 +43,7 @@
 {% endfor %}
 	
 </table>
-<input type="submit" value="Submit" name="delete" />
+<input type="submit" value="Delete" name="delete" />
 </form>
+
+{% endblock %}  
