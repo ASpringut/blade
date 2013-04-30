@@ -9,13 +9,17 @@
 <a = href='../add'> Add Recipe </a>
 
 <form method="post">{% csrf_token %}
-<table>
+<table class="table table-striped">
+    <thead>
     <tr>
         <td>Recipe</td>
         <td></td>
         <td>Delete?</td>
     </tr>
+    </thead>
+<tbody>
 {%for recipe in recipes%}
+
     <tr>
         <td>
             <a href='../view_recipe?recipe={{recipe.id}}'>
@@ -32,6 +36,7 @@
         </td>
     </tr>
 {%endfor%}
+</tbody>
 </table>
 <input type="submit" value="Submit" name="delete">
 </form>

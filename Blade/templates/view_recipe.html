@@ -5,27 +5,31 @@
 
 
 
-    <table>
-        <tr>
-            <td> Ingredient </td>
-            <td> Amount </td>
-            <td> Cost  </td>
-            <td> Cost per unit</td>
-        </tr>
-        {%for ingredient in ingredients%}
-        <tr>
-            <td>{{ingredient.amount}} {{ingredient.unit.abbv}}</td>
-            <td>{{ingredient.ingredient}}</td>
-            <td>{{ingredient.get_cost}}</td>
-            <td>@ {{ingredient.get_cost_per_unit}}/
-                  {{ingredient.unit.abbv}}</td>
-        </tr>
-        {%endfor%}
-        <tr>
-            <td></td>
-            <td>Total: </td>
-            <td>{{recipe.get_cost}}</td>
-        </tr>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td> Ingredient </td>
+                <td> Amount </td>
+                <td> Cost  </td>
+                <td> Cost per unit</td>
+            </tr>
+        </thead>
+        <tbody>
+            {%for ingredient in ingredients%}
+            <tr>
+                <td>{{ingredient.amount}} {{ingredient.unit.abbv}}</td>
+                <td>{{ingredient.ingredient}}</td>
+                <td>{{ingredient.get_cost}}</td>
+                <td>@ {{ingredient.get_cost_per_unit}}/
+                      {{ingredient.unit.abbv}}</td>
+            </tr>
+            {%endfor%}
+            <tr>
+                <td></td>
+                <td>Total: </td>
+                <td>{{recipe.get_cost}}</td>
+            </tr>
+        </tbody>
     </table>
 
     <p>{{recipe.instruction}}</p>

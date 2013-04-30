@@ -21,7 +21,8 @@
 <!--Create a form for the check boxes to delete ingredients-->
 <form method="post">{% csrf_token %}
 
-<table border = "1">
+<table class ="table table-striped">
+<thead>
 	<tr>
 	<td>Ingredient</td>
 	<td>Quantity</td>
@@ -30,6 +31,8 @@
 	<td>Date Last Changed</td>
 	<td>Delete?</td>
 	</tr>
+</thead>
+<tbody>
 {% for ing in ingredients %}
     <tr>
 		<td>{{ing.name}}</td>
@@ -38,12 +41,11 @@
 		<td>{{ing.cost_per_unit}}</td>
 		<td>{{ing.date_modified}}</td>
 		<td><input type="checkbox" name="delete_ingredient" value={{ing.id}}></td>
-
 	</tr>
 {% endfor %}
-	
+</tbody>
 </table>
-<input type="submit" value="Delete" name="delete" />
+<input type="submit" value="Delete" name="delete">
 </form>
 
-{% endblock %}  
+{% endblock %}
