@@ -64,7 +64,9 @@ def ingredient(request):
     render_dict["form"]=form
     render_dict.update(csrf(request))
 
-    return render_to_response("ingredient.html",render_dict)
+    return render_to_response("ingredient.html",
+                              render_dict,
+                              context_instance=RequestContext(request))
         
 @login_required
 def add_ingredients(request):
@@ -100,7 +102,9 @@ def add_ingredients(request):
     render_dict.update(csrf(request))
 
     #create a formset for ingredients
-    return render_to_response('add_ingredients.html', render_dict)
+    return render_to_response('add_ingredients.html',
+                              render_dict,
+                              context_instance=RequestContext(request))
 
 #page to return that immediately redirects to ingredient to hide POST data
 #submission from the user

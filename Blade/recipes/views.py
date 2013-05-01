@@ -4,7 +4,7 @@ from django.forms.models import inlineformset_factory
 from django.core.context_processors import csrf
 from django.core.exceptions import ObjectDoesNotExist 
 from django.shortcuts import render_to_response, redirect
-
+from django.template import RequestContext
 
 from recipes.InputForms import RecipeForm, RecipeIngredientForm
 
@@ -28,7 +28,7 @@ def add_recipe(request):
     #create the form
     recipeform = RecipeForm()
     RecipeIngredientFormset = inlineformset_factory(Recipe, RecipeIngredient)
-    ing_formset = RecipeIngredientFormset();
+    ing_formset = RecipeIngredientFormset()
 
     #if we receive information about a recipe to load
     if request.method == 'GET' and 'recipe' in request.GET:
@@ -89,7 +89,9 @@ def add_recipe(request):
     render_dict.update(csrf(request))
     
         
-    return render_to_response("add_recipe.html",render_dict)
+    return render_to_response("add_recipe.html",
+                              render_dict,
+                              context_instance=RequestContext(request))
         
 
 
@@ -117,7 +119,9 @@ def view_recipes(request):
     #add the csrf form for deleting recipes
     render_dict.update(csrf(request))
 
-    return render_to_response("view_recipes.html",render_dict)
+    return render_to_response("view_recipes.html",
+                              render_dict,
+                              context_instance=RequestContext(request))
 
 @login_required
 def view_recipe(request):
@@ -151,4 +155,6 @@ def view_recipe(request):
     #add it to the render dict
     render_dict['recipe'] = recipe
 
-    return render_to_response("view_recipe.html",render_dict)
+    return render_to_response("view_recipe.html",
+                              render_dict,
+                              context_instance=RequestContext(request))

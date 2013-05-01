@@ -2,7 +2,10 @@
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
+
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+
 from django.http import HttpResponse
 
 from django.core.exceptions import ObjectDoesNotExist
@@ -43,7 +46,9 @@ def login_view(request):
     
     
     
-    return render_to_response('login.html', render_dict)
+    return render_to_response('login.html', 
+                              render_dict,
+                              context_instance=RequestContext(request))
 
     
 def logout_view(request):
@@ -87,44 +92,44 @@ def register(request):
     render_dict.update(csrf(request))
     
     #display the form
-    return render_to_response('register.html', render_dict, 
+    return render_to_response('register.html', 
+                              render_dict, 
                               context_instance=RequestContext(request))
                               
 
 def index(request):
-    return render_to_response('index.html')
-    
-
+    render_dict=[]
+    return render_to_response('index.html',
+                              render_dict,
+                              context_instance=RequestContext(request))
+   
+@login_required
 def restaurantMain(request):
     
-    if request.user.is_authenticated():
+    render_dict = {}
+    #get the restaurant name
+    key = request.user.id
+    prof = UserProfile.objects.get(user=key)
+    rest = prof.restaurant
+    #add the name of the restaurant to be rendered
+    render_dict["restaurant_name"]=rest
     
-        render_dict = {}
-        #get the restaurant name
-        key = request.user.id
-        prof = UserProfile.objects.get(user=key)
-        rest = prof.restaurant
-        #add the name of the restaurant to be rendered
-        render_dict["restaurant_name"]=rest
-        
-        #get the first 10 ingredients
-        try:
-            #try to find ingredients for this restaurant
-            ingredient_list = list(Ingredient.objects.filter(restaurant = rest.id))
-        except ObjectDoesNotExist:
-            ingredient_list=[]
+    #get the first 10 ingredients
+    try:
+        #try to find ingredients for this restaurant
+        ingredient_list = list(Ingredient.objects.filter(restaurant = rest.id))
+    except ObjectDoesNotExist:
+        ingredient_list=[]
 
-        #get the first 10 recipes
-        try:
-            recipe_list = list(Recipe.objects.filter(restaurant = rest.id))
-        except ObjectDoesNotExist:
-            recipe_list = []
+    #get the first 10 recipes
+    try:
+        recipe_list = list(Recipe.objects.filter(restaurant = rest.id))
+    except ObjectDoesNotExist:
+        recipe_list = []
 
-        render_dict["recipes"] = recipe_list
-        render_dict["ingredients"] = ingredient_list
-        
-        return render_to_response("main.html",render_dict)
-            
-        
-    else:
-        return HttpResponse("not logged in")
+    render_dict["recipes"] = recipe_list
+    render_dict["ingredients"] = ingredient_list
+    
+    return render_to_response("main.html",
+                              render_dict,
+                              context_instance=RequestContext(request))
