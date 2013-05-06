@@ -54,5 +54,10 @@ class RecipeIngredient(models.Model):
 
         return cost_p_u
 
+class RecipeService(models.Model):
+    recipe = models.ForeignKey(Recipe)
+    number = models.PositiveIntegerField()
+    date = models.DateField(auto_now_add = True)
+
 
 

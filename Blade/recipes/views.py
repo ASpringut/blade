@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 
-from recipes.InputForms import RecipeForm, RecipeIngredientForm
+from recipes.InputForms import RecipeForm, RecipeIngredientForm, ServiceForm
 
 from inventory.models import Ingredient
 from recipes.models import Recipe, RecipeIngredient
@@ -82,7 +82,12 @@ def add_recipe(request):
                 return redirect(add_recipe)
 
 
-            
+    #before the form is added to the render dict change the query set so the user
+    #sees only their own ingredients
+    user_ingredients = Ingredient.objects.filter(restaurant = rest)
+    for form in ing_formset:
+        form.fields['ingredient'].queryset=user_ingredients
+
     #add forms and csrf to dict
     render_dict['recipeform'] = recipeform
     render_dict['ingredientform'] = ing_formset
@@ -156,5 +161,32 @@ def view_recipe(request):
     render_dict['recipe'] = recipe
 
     return render_to_response("view_recipe.html",
+                              render_dict,
+                              context_instance=RequestContext(request))
+
+
+@login_required
+def serve_recipe(request):
+
+    render_dict = {}
+    #get the restaurant
+    rest = InventoryUtils.get_rest(request)
+
+    # create the formset and add the form
+    ServiceFormSet = formset_factory(ServiceForm, extra=3)
+    formset = ServiceFormSet()
+
+    #add the queryset so that users can only see their own recipes
+    valid_recipes = Recipe.objects.filter(restaurant = rest)
+    for form in formset:
+        form.fields['recipe'].queryset = valid_recipes
+
+    render_dict['formset'] = formset
+
+
+    #add the csrf form for deleting recipes
+    render_dict.update(csrf(request))
+
+    return render_to_response("serve_recipe.html",
                               render_dict,
                               context_instance=RequestContext(request))

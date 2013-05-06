@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block head%}
+<script src = '/static/script/dynamic_row.js'>
+</script>
+
+
+{% endblock %} 
+
+{% block content%}
+
+<h2> Serve Recipes</h2>
+<form method="post">{% csrf_token %}
+
+<table class = "form_row_table">
+<thead>
+    <tr><td>Recipe</td><td>Number Served</td></tr>
+</thead>
+<tbody>
+{% for form in formset%}
+    <tr class='form_row'>
+    {% for field in form%}
+        <td>{{field}}</td>
+    {% endfor %}
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+<input type="button" value="Add Ingredient" onclick="add_row();" />
+<input type="button" value="Remove Ingredient" onclick="remove_row();"/>
+</br>
+<input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

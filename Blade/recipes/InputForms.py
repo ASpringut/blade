@@ -1,5 +1,5 @@
-from django.forms import Textarea, ModelForm
-from recipes.models import Recipe, RecipeIngredient
+from django.forms import Textarea, ModelForm, Form
+from recipes.models import Recipe, RecipeIngredient, RecipeService
 from Measures.models import Unit
 
 class RecipeForm(ModelForm):
@@ -13,3 +13,7 @@ class RecipeIngredientForm(ModelForm):
     class Meta:
         model = RecipeIngredient
         exclude = ('recipe',)
+
+class ServiceForm(ModelForm):
+    class Meta:
+        model = RecipeService

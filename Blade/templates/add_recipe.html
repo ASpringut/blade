@@ -1,9 +1,18 @@
 {% extends "base.html" %}
 {% block head%}
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+
+
+<script src = '/static/script/dynamic_row.js'>
 </script>
 <script>
-number_of_rows = 1;
+$(document).ready(function(){
+
+    //bind a get_valid_units as a handler when
+    //the ingredient is changed for every existing ingredient select
+    $(".form_row").change(get_valid_units);
+
+});
+
 </script>
 
 {% endblock %} 
@@ -62,17 +71,6 @@ number_of_rows = 1;
 </ul>
 
 
-<script src = '/static/script/dynamic_row.js'>
-</script>
-<script>
-$(document).ready(function(){
 
-    //bind a get_valid_units as a handler when
-    //the ingredient is changed for every existing ingredient select
-    $(".form_row").change(get_valid_units);
-
-});
-
-</script>
  	
 {% endblock %} 

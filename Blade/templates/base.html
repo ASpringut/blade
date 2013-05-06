@@ -20,7 +20,7 @@
             <ul class="nav"> 
                 <li><a href="/" class = "brand"> Blade </a> </li> 
                 {% if user.is_authenticated %}
-                <li><a href= "/main/"> View Resturant </a></li>
+                <li><a href= "/main/"> View Restaurant </a></li>
                 <li class = "dropdown">
                     <a role="button" class="dropdown-toggle" data-toggle="dropdown"> Inventory<b class="caret"></b> </a>
                     <ul class ="dropdown-menu">
@@ -33,6 +33,7 @@
                     <ul class ="dropdown-menu">
                         <li><a href= "/recipes/view"> View Recipes </a></li>
                         <li><a href= "/recipes/add"> Add Recipe</a></li>
+                        <li><a href= "/recipes/serve"> Serve Recipe</a></li>
                     </ul> 
                 </li>
                 {% endif %}
