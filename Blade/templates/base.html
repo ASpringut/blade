@@ -5,8 +5,7 @@
 <meta charset="utf-8"> 
 <!--add twitter bootstrap style sheet-->
 <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen"></link>
-<script type = "text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
-</script>  
+<script type = "text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>  
 <script type = "text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>  
 {% block head%}
 {% endblock %}  
@@ -32,8 +31,9 @@
                     <a role="button" class="dropdown-toggle" data-toggle="dropdown"> Recipes<b class="caret"></b> </a>
                     <ul class ="dropdown-menu">
                         <li><a href= "/recipes/view"> View Recipes </a></li>
-                        <li><a href= "/recipes/add"> Add Recipe</a></li>
-                        <li><a href= "/recipes/serve"> Serve Recipe</a></li>
+                        <li><a href= "/recipes/add"> Add Recipes</a></li>
+                        <li><a href= "/recipes/serve"> Serve Recipes</a></li>
+                        <li><a href= "/recipes/view_service"> View Service</a></li>
                     </ul> 
                 </li>
                 {% endif %}
@@ -42,6 +42,7 @@
 
             <ul class ="nav pull-right">
                 {% if user.is_authenticated %}
+                <li><p class="navbar-text">Logged in as: {{user.username}}</p></li>
                 <li><a href= "/logout/"> Logout </a></li>
                 {% else %}
                 <li><a href= "/login/"> Login </a></li> 

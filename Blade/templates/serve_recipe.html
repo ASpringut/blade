@@ -11,7 +11,7 @@
 
 <h2> Serve Recipes</h2>
 <form method="post">{% csrf_token %}
-
+{{ formset.management_form }}
 <table class = "form_row_table">
 <thead>
     <tr><td>Recipe</td><td>Number Served</td></tr>
@@ -22,6 +22,7 @@
     {% for field in form%}
         <td>{{field}}</td>
     {% endfor %}
+        <td>{{form.errors}}</td>
     </tr>
 {% endfor %}
 </tbody>

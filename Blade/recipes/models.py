@@ -59,5 +59,13 @@ class RecipeService(models.Model):
     number = models.PositiveIntegerField()
     date = models.DateField(auto_now_add = True)
 
+    def __str__(self):
+        return ' '.join([str(self.recipe), str(self.number)])
+
+    def get_cost(self):
+        return self.number*self.recipe.get_cost()
+
+
+
 
 

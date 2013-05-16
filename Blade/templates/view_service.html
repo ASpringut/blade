@@ -1,0 +1,11 @@
+
+{% extends "base.html" %}
+{% block content%}
+
+{% load render_table from django_tables2 %}
+
+<h2>{{restaurant}} Service</h2>
+
+{% render_table table%}
+
+{% endblock %} 
