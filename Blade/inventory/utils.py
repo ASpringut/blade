@@ -44,7 +44,7 @@ def add_ingredient(rest, form):
 
 #pass in the post dict of the request
 def delete_ingredients(rest, post):
-	delete_list = post.getlist('delete_ingredient')
+	delete_list = post.getlist('delete')
 	#convert the list to ingredient objects 
 	delete_list = [Ingredient.objects.get(pk=int(ing_id)) for ing_id in delete_list]
 	for ing in delete_list:

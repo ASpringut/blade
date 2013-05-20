@@ -1,6 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-test
+
+{% load staticfiles%}
+<div id='content' class='row-fluid'>
+    <div class='span3'>
+        <img src={%static "image/knife.jpg"%} alt="knife"></img>
+        <h3>Inventory</h3>
+    </div>
+    <div class='span3'>
+        <img src={%static "image/cookbook.png"%} alt="cookbook"></img>
+        <h3>Recipes</h3>
+    </div>
+    <div class='span3'>
+        <img src={%static "image/place-setting.jpg"%} alt="place setting"></img>
+        <h3>Service</h3>
+    </div>
+    <div class='span3'>
+        <img src={%static "image/graph.png"%} alt="graph"></img>
+        <h3>Stats</h3>
+    </div>
+</div>
 
 {% endblock %}

@@ -1,0 +1,1 @@
+web: python ./blade/manage.py runserver

@@ -4,8 +4,9 @@ from django.shortcuts import render_to_response, redirect
 #import user management models
 from django.contrib.auth.models import User
 from users.models import UserProfile
+from inventory.tables import IngredientTable
 
-
+from django_tables2   import RequestConfig
 from django.core.context_processors import csrf
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import RequestContext
@@ -36,6 +37,7 @@ def ingredient(request):
 
     #Deal with the ingredient add form
     if request.method == 'POST': # If the form has been submitted...
+        print request.POST
         #if the quickadd form was submitted
         if "quickadd" in request.POST:
             form=IngredientForm(request.POST)
@@ -57,6 +59,11 @@ def ingredient(request):
     #if the object does not exist there are not any ingredients 
     except ObjectDoesNotExist:
         ingred = []
+
+    #create the table of ingredients
+    ing_table = IngredientTable(Ingredient.objects.filter(restaurant = rest.id))     
+    RequestConfig(request).configure(ing_table)
+    render_dict["ing_table"] = ing_table
         
     render_dict["ingredients"] = ingred  
 
@@ -81,7 +88,7 @@ def add_ingredients(request):
     #on the current login, also you dont want users touching other users'
     #restaurants
     IngredientFormset = modelformset_factory(Ingredient, 
-                                             exclude=('restaurant',),
+                                             exclude=('restaurant','total_value'),
                                              extra=5)
 
     #this page should be for adding ingredients only

@@ -7,6 +7,6 @@ from Measures.models import Unit
 class IngredientForm(ModelForm):
     class Meta:
         model = Ingredient
-        exclude = ('restaurant', 'date_modified')
+        exclude = ('restaurant', 'date_modified', 'total_value')
 
     
