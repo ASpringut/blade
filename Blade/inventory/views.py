@@ -62,7 +62,7 @@ def ingredient(request):
 
     #create the table of ingredients
     ing_table = IngredientTable(Ingredient.objects.filter(restaurant = rest.id))     
-    RequestConfig(request).configure(ing_table)
+    RequestConfig(request, paginate={"per_page": 10}).configure(ing_table)
     render_dict["ing_table"] = ing_table
         
     render_dict["ingredients"] = ingred  

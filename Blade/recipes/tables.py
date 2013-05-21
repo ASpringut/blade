@@ -4,4 +4,4 @@ from models import RecipeService
 class ServiceTable(tables.Table):
     class Meta:
         model = RecipeService
-        attrs = {"class": "table"}
+        attrs = {"class": "table table-stripped"}
