@@ -37,11 +37,10 @@ def ingredient(request):
 
     #Deal with the ingredient add form
     if request.method == 'POST': # If the form has been submitted...
-        print request.POST
         #if the quickadd form was submitted
         if "quickadd" in request.POST:
             form=IngredientForm(request.POST)
-            if form.is_valid():          
+            if form.is_valid():      
                 utils.add_ingredient(rest, form)
                 #return to page after redirect
                 return redirect(ingredient_redirect)
@@ -51,21 +50,11 @@ def ingredient(request):
             utils.delete_ingredients(rest, request.POST)
 
 
-    #get the first 10 ingredients to display and add them to the renderdict
-    try:
-        #try to find ingredients for this restaurant
-        ingred = list(Ingredient.objects.filter(restaurant = rest.id))
-
-    #if the object does not exist there are not any ingredients 
-    except ObjectDoesNotExist:
-        ingred = []
-
     #create the table of ingredients
     ing_table = IngredientTable(Ingredient.objects.filter(restaurant = rest.id))     
     RequestConfig(request, paginate={"per_page": 10}).configure(ing_table)
     render_dict["ing_table"] = ing_table
         
-    render_dict["ingredients"] = ingred  
 
     #add the form to the render dictionary
     render_dict["form"]=form

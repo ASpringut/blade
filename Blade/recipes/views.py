@@ -9,7 +9,7 @@ from django.template import RequestContext
 from django_tables2 import RequestConfig
 
 from recipes.InputForms import RecipeForm, RecipeIngredientForm, ServiceForm
-from recipes.tables import ServiceTable
+from recipes.tables import ServiceTable, RecipeTable
 
 from inventory.models import Ingredient
 from recipes.models import Recipe, RecipeIngredient, RecipeService
@@ -72,13 +72,12 @@ def add_recipe(request):
             #valid
             if ing_formset.is_valid():
 
-                #once we know the full transaction is good
-                #we can save the recipe to the database
-                recipe.save()
-                
-                #and the ingredients
+                #save the ingredients first so the recipe can calculate its cost
                 ing_formset.save()
 
+                #save the recipe to the database
+                recipe.save()
+                
                 #redirect to the version of this page but without the post data
                 #this prevents the user from accidentally refreshing
                 #and submitting the form twice
@@ -117,13 +116,13 @@ def view_recipes(request):
         #the only form on the page is the delete form, delete the requested recipes
         utils.delete_recipe(rest,request.POST)
 
-    #get the recipes to display and add them to the renderdict
-    try:
-        recipe_list = list(Recipe.objects.filter(restaurant = rest.id))
-    except ObjectDoesNotExist:
-        recipe_list=[]
 
-    render_dict["recipes"] = recipe_list
+    #make the table of recipes
+    table = RecipeTable(Recipe.objects.filter(restaurant = rest.id))
+    RequestConfig(request).configure(table)
+    render_dict['table'] = table
+
+
     #add the csrf form for deleting recipes
     render_dict.update(csrf(request))
 

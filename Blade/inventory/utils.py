@@ -1,5 +1,6 @@
 from users.models import UserProfile
 from inventory.models import Ingredient
+from recipes.models import Recipe, RecipeIngredient
 from django.core.exceptions import ObjectDoesNotExist
 from decimal import *
 
@@ -28,6 +29,10 @@ def add_ingredient(rest, form):
 		#update the cost_per_unit to the new value
 		db_ingredient.cost_per_unit = cost_per_unit
 		db_ingredient.save()
+		#update any recipes that are dependent on the ingredient
+		#we only need to do this for exisiting ingredients because you cant have a recipe with
+		#an ingredient that has not been added yet
+		update_recipes(db_ingredient)
 
 	#if we get a does not exist error there isnt an ingredient by that name yet
 	#so make a new one
@@ -53,3 +58,14 @@ def delete_ingredients(rest, post):
 			#delete the ingredients
 			ing.delete()			
 
+#re-saves the recipes that are dependent on an ingredient
+#so that their cost column is updated
+def update_recipes(changed_ing):
+	#do a reverse lookup from foreign key
+    update_rec_ings = RecipeIngredient.objects.filter(ingredient = changed_ing)
+    rec_ing_id = update_rec_ings.values_list('id', flat=True)
+    update_rec = Recipe.objects.filter(id__in=rec_ing_id)
+
+    #save all the recipes to update prices
+    for rec in update_rec:
+    	rec.save()

@@ -7,6 +7,7 @@ class Recipe(models.Model):
     restaurant = models.ForeignKey(Restaurant)
     name = models.CharField(max_length = 30)
     instruction = models.CharField(max_length = 1024)
+    cost= models.DecimalField(max_digits=6, decimal_places=2)
     
     def __str__(self):
         return self.name
@@ -22,6 +23,11 @@ class Recipe(models.Model):
 
         cost = sum([ingredient.get_cost() for ingredient in ingredients])
         return cost
+
+    def save(self, *args, **kwargs):
+        #always update the total value before saving
+        self.cost = self.get_cost()
+        super(Recipe, self).save(*args, **kwargs)
 
 
     class Meta:

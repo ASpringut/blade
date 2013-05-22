@@ -5,7 +5,7 @@ from Measures.models import Unit
 class RecipeForm(ModelForm):
     class Meta:
         model = Recipe
-        exclude = ('restaurant',)
+        exclude = ('restaurant', 'cost')
         widgets = {'instruction': Textarea()}
         
         

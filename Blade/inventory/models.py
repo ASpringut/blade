@@ -1,5 +1,4 @@
 from django.db import models
-
 from Measures.models import Unit
 
 class Restaurant(models.Model):
@@ -33,9 +32,9 @@ class Ingredient(models.Model):
         #always update the total value before saving
         self.total_value = self.amount*self.cost_per_unit
         super(Ingredient, self).save(*args, **kwargs)
+        #update all the recipes that use this ingredient
 
     
     class Meta:
         ordering = ('name',)
 
-    
