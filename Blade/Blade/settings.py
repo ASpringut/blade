@@ -6,7 +6,7 @@ SITE_ROOT = os.path.dirname(os.path.realpath('__file__'))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
-DATABASE_NAME = os.path.join(SITE_ROOT, 'db') + '\development.db'
+DATABASE_NAME = os.path.join(SITE_ROOT, 'db', 'development.db')
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -72,7 +72,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(SITE_ROOT, 'static\\'),
+    os.path.join(SITE_ROOT, 'static'),
 )
 print (STATICFILES_DIRS)
 # List of finder classes that know how to find static files in
