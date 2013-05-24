@@ -1,12 +1,6 @@
 import django_tables2 as tables
 from django_tables2.utils import A
-from models import RecipeService, Recipe
-
-class ServiceTable(tables.Table):
-    class Meta:
-        model = RecipeService
-        attrs = {"class": "table table-stripped"}
-        exclude = ('id',)
+from models import Recipe
 
 class RecipeTable(tables.Table):
     delete = tables.CheckBoxColumn(accessor="pk", orderable=False)
