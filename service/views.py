@@ -10,7 +10,7 @@ from django.template import RequestContext
 from django_tables2 import RequestConfig
 
 #import stuff from other apps
-from inventory import InventoryUtils
+from inventory import utils as InventoryUtils
 from recipes.models import Recipe
 
 #import stuff from this app
@@ -45,9 +45,12 @@ def serve_recipe(request):
             service_list = formset.save(commit=False)
             #add the cost and then save
             for service in service_list:
+                #add a record to the db
                 service.recipe_cost_at_serve = service.recipe.cost
                 service.cost_at_serve = service.recipe.cost *  Decimal(service.number)
                 service.save()
+                #remove the correct quanitity from the inventory
+                InventoryUtils.serve_ingredients(service.recipe, service.number)
 
             #redirect to prevent resubmission
             return redirect(serve_recipe)

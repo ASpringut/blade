@@ -76,3 +76,7 @@ def update_recipes(changed_ing):
     #save all the recipes to update prices
     for rec in update_rec:
         rec.save()
+
+#remove the quanity of the ingredients in the recipe from the db 
+def serve_ingredients(recipe, number):
+    print recipe, number
