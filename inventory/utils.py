@@ -30,6 +30,7 @@ def add_ingredient(rest, form):
         #add the amount to the database
         db_ingredient.amount = db_ingredient.amount + converted_amount
 
+        #scale the cost per unit to the unit in the db
         converted_cpu = cost_per_unit/convert_factor
         #update the cost_per_unit to the new value
         db_ingredient.cost_per_unit = converted_cpu
