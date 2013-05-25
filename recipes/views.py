@@ -99,9 +99,7 @@ def add_recipe(request):
     return render_to_response("add_recipe.html",
                               render_dict,
                               context_instance=RequestContext(request))
-        
-
-
+    
 @login_required
 def view_recipes(request):
 

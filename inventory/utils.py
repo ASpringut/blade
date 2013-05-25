@@ -79,4 +79,14 @@ def update_recipes(changed_ing):
 
 #remove the quanity of the ingredients in the recipe from the db 
 def serve_ingredients(recipe, number):
-    print recipe, number
+    #get all of the ingredients from the recipe
+    rec_ings = RecipeIngredient.objects.filter(recipe = recipe)
+    for rec_ing in rec_ings:
+        #get the ingredient entry from the db
+        ing = rec_ing.ingredient
+        #TODO:refactor this code to another function 
+        #so it can be used in add ingredient too
+        convert_factor = Decimal(rec_ing.unit.factor)/Decimal(ing.unit.factor)
+        ing.amount -= rec_ing.amount*convert_factor*number
+        ing.save()
+
