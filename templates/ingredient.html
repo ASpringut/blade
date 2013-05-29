@@ -4,16 +4,16 @@
 <h1>Ingredients</h1>
 <h2>{{resturant_name}}</h2></br>
 
-<a href="/main/">Back To Home</a></br>
-<a href="../add">Add ingredient</a>
+
+
 {% if errors %}
 	{{errors}}
 {% endif %}
 
-<h3>Quick-add</h3>
+<h3>Quick-add</h3> <a href="../add">Add multiple ingredients</a>
 <form method="post">{% csrf_token %}
 {{ form.as_p }}
-<input type="submit" value="Submit" name="quickadd" />
+<input type="submit" value="Submit" name="quickadd" class="btn btn-primary">
 </form>
 
 
@@ -25,7 +25,7 @@
 {% render_table ing_table %}
 
 
-<input type="submit" value="Delete Selected" name="delete_button">
+<input type="submit" value="Delete Selected" name="delete_button" class="btn btn-danger">
 </form>
 
 

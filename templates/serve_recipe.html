@@ -27,10 +27,13 @@
 {% endfor %}
 </tbody>
 </table>
-<input type="button" value="Add Ingredient" onclick="add_row();" />
-<input type="button" value="Remove Ingredient" onclick="remove_row();"/>
-</br>
-<input type="submit" value="Submit" />
+
+<input type="button" value="Add Ingredient" onclick="add_row();" 
+class="btn btn-info"/>
+<input type="button" value="Remove Ingredient" onclick="remove_row();" 
+class="btn btn-danger"/>
+<br/>
+<input type="submit" value="Submit" class="btn btn-primary"/>
 </form>
 
 {% endblock %}
