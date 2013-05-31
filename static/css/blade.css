@@ -18,7 +18,7 @@ html,body {
 
 .django_content {
     padding:5px;
-   padding-bottom:85px;   /* Height of the footer */
+   padding-bottom:65px;   /* Height of the footer */
 }
 
 /*Values here are hard coded for now, but should be automatically changed based
@@ -28,7 +28,7 @@ on bootstrap theme*/
     position:absolute;
     bottom:0;
     width:100%;
-    height:100px;   /* Height of the footer */
+    height:50px;   /* Height of the footer */
     background:#6cf;
     background-color: #080808;
 
