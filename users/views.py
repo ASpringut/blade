@@ -143,3 +143,9 @@ def restaurantMain(request):
     return render_to_response("main.html",
                               render_dict,
                               context_instance=RequestContext(request))
+
+def questions(request):
+        render_dict={}
+        return render_to_response("faq.html",
+                              render_dict,
+                              context_instance=RequestContext(request))
