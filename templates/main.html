@@ -2,21 +2,28 @@
 
 
 {% block content%}
-<h1>{{resturant_name}}</h1></br>
+<h2>{{restaurant_name|title}} Dashboard</h2>
+<div id='content' class='row-fluid'>
 
-<a href="/inventory/view/">Ingredients</a>
 
-<ul>
-{% for ingredient in ingredients %}
-    <li>{{ingredient}}</li>
-{% endfor %}
-</ul>
+    <div class='span6'>
+        
+        <h4>Recently Modified <a href="/inventory/view/">Ingredients</a></h4>
+        <ul>
+        {% for ingredient in ingredients %}
+            <li>{{ingredient|title}} -- {{ingredient.date_modified}}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class='span6'>
+        <h4>Recently Modified <a href="/recipes/view/">Recipes</a></h4>
+        <ul>
+        {% for recipe in recipes %}
+            <li>{{recipe|title}} -- {{recipe.date_modified}}</li>
+        {% endfor %}
+        </ul>
+    </div>
 
-<a href="/recipes/view/">Recipes</a>
-<ul>
-{% for recipe in recipes %}
-    <li>{{recipe}}</li>
-{% endfor %}
-</ul>
+</div>
 
 {% endblock %}

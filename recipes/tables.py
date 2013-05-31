@@ -15,4 +15,4 @@ class RecipeTable(tables.Table):
         model = Recipe
         attrs = {"class": "table table-stripped"}
         exclude = ("id", "restaurant", 'name', 'instruction')
-        sequence = ("recipe_name","cost","edit_recipe","delete")
+        sequence = ("recipe_name","cost","date_modified","edit_recipe","delete")

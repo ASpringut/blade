@@ -8,6 +8,7 @@ class Recipe(models.Model):
     name = models.CharField(max_length = 30)
     instruction = models.CharField(max_length = 1024)
     cost= models.DecimalField(max_digits=6, decimal_places=2)
+    date_modified = models.DateTimeField(auto_now = True)
     
     def __str__(self):
         return self.name

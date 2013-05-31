@@ -12,7 +12,59 @@
 
 <h3>Quick-add</h3> <a href="../add">Add multiple ingredients</a>
 <form method="post">{% csrf_token %}
-{{ form.as_p }}
+
+<div id='content' class='row-fluid'>
+    <div class='span6'>
+        {{form.name.errors}}
+    </div>
+    
+    <div class='span6'>
+        {{form.amount.errors}}
+    </div>
+</div> 
+
+<div id='content' class='row-fluid'>
+    <div class='span2'>
+        {{form.name.label}}:
+    </div>
+     <div class='span4'>
+       {{form.name}} 
+    </div>
+    
+    <div class='span2'>
+        {{form.amount.label}}:
+    </div>
+    <div class='span4'>
+       {{form.amount}} 
+    </div>
+</div>
+
+<div id='content' class='row-fluid'>
+    <div class='span6'>
+        {{form.unit.errors}}
+    </div>    
+    <div class='span6'>
+        {{form.cost_per_unit.errors}}
+    </div>
+</div>
+
+<div id='content' class='row-fluid'>
+    <div class='span2'>
+        {{form.unit.label}}:
+    </div>
+     <div class='span4'>
+       {{form.unit}} 
+    </div>
+    
+    <div class='span2'>
+        {{form.cost_per_unit.label}}:
+    </div>
+    <div class='span4'>
+       {{form.cost_per_unit}} 
+    </div>
+</div>
+
+
 <input type="submit" value="Submit" name="quickadd" class="btn btn-primary">
 </form>
 

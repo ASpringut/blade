@@ -1,23 +1,28 @@
+{% load staticfiles%}
 <!DOCTYPE html>
 <html lang = "en">
 <head>
-<meta charset="utf-8"> 
-<!--add twitter bootstrap style sheet-->
-<link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen"></link>
-<script type = "text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>  
-<script type = "text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>  
-{% block head%}
-{% endblock %}  
+    <meta charset="utf-8"> 
+    <!--add twitter bootstrap style sheet-->
+    <link href={% static "bootstrap/css/bootstrap.css" %} rel="stylesheet" media="screen"></link>
+    <link href={% static "css/blade.css" %} rel="stylesheet" media="screen"></link>
+    <script type = "text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>  
+    <script type = "text/javascript" src={% static "bootstrap/js/bootstrap.min.js" %}></script>  
+    {% block head%}
+    {% endblock %}  
 </head>
 
 <body>
+<div class="page_container">
+
+<div class="header">
 <a href="/" class = "brand"><h1> Blade</h1>  </a> 
 <div class="navbar">  
     <div class="navbar-inner">  
         <div class="container">  
             <ul class="nav"> 
                 {% if user.is_authenticated %}
-                <li><a href= "/main/"> View Restaurant </a></li>
+                <li><a href= "/main/"> Dashboard </a></li>
                 <li class = "dropdown">
                     <a role="button" class="dropdown-toggle" data-toggle="dropdown"> Inventory<b class="caret"></b> </a>
                     <ul class ="dropdown-menu">
@@ -55,11 +60,39 @@
 
         </div>  
     </div>  
-</div>   
+</div> 
+</div>
 
 
+
+<div class= "django_content">
 {% block content%}
 {% endblock %}
+</div>
+
+
+<footer class="footer">
+    <div id='content' class='row-fluid'>
+        <div class='span4'>
+            <ul>
+            <li>Powered by Django</li>
+            </ul>
+        </div>
+        <div class='span4'>
+            <ul>
+            <li>&copy; Aaron Springut 2013</li>
+            <li>Contact: <a href="mailto:aspringut@blade.com"> aspringut@blade.com</a></li>
+            </ul>
+        </div>
+        <div class='span4'>
+            <ul>
+            <li>Version 0.1</li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+</div>
 
 </body>
 </html>

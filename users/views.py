@@ -81,8 +81,11 @@ def register(request):
             user_prof = UserProfile(user=u,
                                     restaurant = r)
             user_prof.save()
-            
-            return HttpResponse("Thanks for registering.")
+            user = authenticate(username=form.cleaned_data['username'], 
+                                password=form.cleaned_data['Password'])
+            if user is not None:
+                login(request, user)
+            return redirect(index)
         else:
             #if it failed add the errors to the render dictionary
             render_dict["errors"] = form.errors.__unicode__()
@@ -114,21 +117,28 @@ def restaurantMain(request):
     #add the name of the restaurant to be rendered
     render_dict["restaurant_name"]=rest
     
-    #get the first 10 ingredients
+    #get the first 5 ingredients
     try:
         #try to find ingredients for this restaurant
-        ingredient_list = list(Ingredient.objects.filter(restaurant = rest.id))
+        ing_list = Ingredient.objects
+        ing_list = ing_list.filter(restaurant = rest.id)
+        ing_list = ing_list.order_by("-date_modified")
+        ing_list = list(ing_list[:5])
     except ObjectDoesNotExist:
         ingredient_list=[]
+    render_dict["ingredients"] = ing_list
 
     #get the first 10 recipes
     try:
-        recipe_list = list(Recipe.objects.filter(restaurant = rest.id))
+        recipe_list = Recipe.objects
+        recipe_list = recipe_list.filter(restaurant = rest.id)
+        recipe_list = recipe_list.order_by("-date_modified")
+        recipe_list = list(recipe_list[:5])
     except ObjectDoesNotExist:
         recipe_list = []
 
     render_dict["recipes"] = recipe_list
-    render_dict["ingredients"] = ingredient_list
+
     
     return render_to_response("main.html",
                               render_dict,
