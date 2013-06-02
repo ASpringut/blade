@@ -3,7 +3,7 @@ import os, django
 
 DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.getcwd()
-
+ALLOWED_HOSTS = ['*']
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
