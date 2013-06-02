@@ -1,5 +1,7 @@
 Django==1.5.1
 argparse==1.2.1
+boto==2.9.5
+django-storages==1.1.8
 django-tables2==0.13.0
 gunicorn==0.17.4
 wsgiref==0.1.2

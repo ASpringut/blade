@@ -5,7 +5,7 @@ DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.getcwd()
 
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 DATABASE_NAME = os.path.join(SITE_ROOT, 'db', 'development.db')
 
@@ -82,6 +82,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'y^l66r7or_ygvdcr0zmw4pehok=7e5=!^v8bj2+p!y-#)xd-cq'
