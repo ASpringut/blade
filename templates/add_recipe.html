@@ -1,9 +1,9 @@
 {% extends "base.html" %}
+{% load staticfiles%}
 {% block head%}
 
 
-<script src = '/static/script/dynamic_row.js'>
-</script>
+<script src = {% static 'script/dynamic_row.js' %}></script>
 <script>
 $(document).ready(function(){
 

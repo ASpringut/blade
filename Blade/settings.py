@@ -5,7 +5,7 @@ DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.getcwd()
 ALLOWED_HOSTS = ['*']
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 DATABASE_NAME = os.path.join(SITE_ROOT, 'db', 'development.db')
 
@@ -149,7 +149,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
     'django_tables2',
-    'storages',
+    #temporarily commented out for debug
+    #'storages',
 )
 
 # A sample logging configuration. The only tangible logging

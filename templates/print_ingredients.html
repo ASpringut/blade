@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<td>
+				Name
+				</td>
+				<td>
+				Amount
+				</td>
+				<td>
+				Unit
+				</td>
+				<td>
+				Cost per Unit
+				</td>
+				<td>
+				Total Value
+				</td>
+				<td>
+				Date Modified
+				</td>
+			</tr>
+		</thead>
+	{% for ingredient in ingredients%}
+		<tr>
+			<td>
+			{{ingredient.name}}
+			</td>
+			<td>
+			{{ingredient.amount}}
+			</td>
+			<td>
+			{{ingredient.unit.name}}
+			</td>
+			<td>
+			{{ingredient.cost_per_unit}}
+			</td>
+			<td>
+			{{ingredient.total_value}}
+			</td>
+			<td>
+			{{ingredient.date_modified}}
+			</td>
+		</tr>
+	{% endfor %}
+	</table>
+</body>

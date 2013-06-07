@@ -8,7 +8,7 @@ class RecipeTable(tables.Table):
     name_link ='<a href = "../view_recipe?recipe={{record.pk}}">{{record.name}}</a>'
     recipe_name = tables.TemplateColumn(name_link, order_by=A("name"))
     #custom column for editing
-    edit_link ='<a href = "../add?recipe{{record.pk}}">edit'
+    edit_link ='<a href = "../add?recipe={{record.pk}}">edit'
     edit_recipe = tables.TemplateColumn(edit_link, orderable=False)
 
     class Meta:

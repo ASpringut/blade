@@ -106,3 +106,22 @@ def add_ingredients(request):
 #submission from the user
 def ingredient_redirect(request):
     return redirect(ingredient)
+
+# a view that has all of the recipes for a restaurant on a single page
+# for printing
+@login_required
+def print_view(request):
+    render_dict = {}
+    #get the rest
+    rest = utils.get_rest(request)
+
+    try:
+        all_ings = Ingredient.objects.filter(restaurant = rest)
+    except ObjectDoesNotExist:
+        all_ings =[]
+
+    render_dict['ingredients'] = all_ings
+
+    return render_to_response('print_ingredients.html',
+                              render_dict,
+                              context_instance=RequestContext(request))
