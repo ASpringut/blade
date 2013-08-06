@@ -5,12 +5,12 @@ DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.getcwd()
 ALLOWED_HOSTS = ['*']
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = True
 DATABASE_NAME = os.path.join(SITE_ROOT, 'db', 'development.db')
 
 ADMINS = (
-    #('Aaron', 'ajs753@gmail.com'),
+    ('Aaron', 'ajs753@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -25,7 +25,7 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
-
+    
 if not DEBUG:
     # Parse database configuration from $DATABASE_URL
     import dj_database_url
