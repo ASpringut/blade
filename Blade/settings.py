@@ -5,7 +5,7 @@ DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.getcwd()
 ALLOWED_HOSTS = ['*']
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 DATABASE_NAME = os.path.join(SITE_ROOT, 'db', 'development.db')
 
@@ -15,7 +15,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-if DEBUG:
+if not DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
