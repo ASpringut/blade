@@ -15,7 +15,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-if not DEBUG:
+if DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
