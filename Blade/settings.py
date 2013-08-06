@@ -10,7 +10,7 @@ TEMPLATE_DEBUG = DEBUG
 DATABASE_NAME = os.path.join(SITE_ROOT, 'db', 'development.db')
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Aaron', 'ajs753@gmail.com'),
 )
 
 MANAGERS = ADMINS
