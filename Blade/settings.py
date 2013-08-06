@@ -5,8 +5,8 @@ DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.getcwd()
 ALLOWED_HOSTS = ['*']
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+DEBUG = False
+TEMPLATE_DEBUG = True
 DATABASE_NAME = os.path.join(SITE_ROOT, 'db', 'development.db')
 
 ADMINS = (
