@@ -5,8 +5,9 @@ DJANGO_ROOT = os.path.dirname(os.path.realpath(django.__file__))
 SITE_ROOT = os.getcwd()
 ALLOWED_HOSTS = ['*']
 
-DEBUG = False
-TEMPLATE_DEBUG = True
+HEROKU = True
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 DATABASE_NAME = os.path.join(SITE_ROOT, 'db', 'development.db')
 
 ADMINS = (
@@ -26,7 +27,7 @@ DATABASES = {
     }
 }
 
-if not DEBUG:
+if HEROKU:
     # Parse database configuration from $DATABASE_URL
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
