@@ -128,5 +128,15 @@
             "name": "Teaspoon", 
             "factor": 0.00492892
         }
+    },
+    {
+        "pk": 14, 
+        "model": "Measures.unit", 
+        "fields": {
+            "abbv": "pc", 
+            "type": "p", 
+            "name": "Piece", 
+            "factor": 1
+        }
     }
 ]
