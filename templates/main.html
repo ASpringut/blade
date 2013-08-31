@@ -3,12 +3,12 @@
 
 {% block content%}
 <h2>{{restaurant_name|title}} Dashboard</h2>
-<div id='content' class='row-fluid'>
+<div id='modified' class='row-fluid'>
 
 
     <div class='span6'>
         
-        <h4>Recently Modified <a href="/inventory/view/">Ingredients</a></h4>
+        <h3>Recently Modified <a href="/inventory/view/">Ingredients</a></h3>
         <ul>
         {% for ingredient in ingredients %}
             <li>{{ingredient|title}} -- {{ingredient.date_modified}}</li>
@@ -16,7 +16,7 @@
         </ul>
     </div>
     <div class='span6'>
-        <h4>Recently Modified <a href="/recipes/view/">Recipes</a></h4>
+        <h3>Recently Modified <a href="/recipes/view/">Recipes</a></h3>
         <ul>
         {% for recipe in recipes %}
             <li>{{recipe|title}} -- {{recipe.date_modified}}</li>
@@ -24,6 +24,29 @@
         </ul>
     </div>
 
+ 
+</div>
+<div id='ServiceTitle' class='row-fluid'>
+    <h3>Recently Served Recipes </h3>
+</div>
+
+<div id='services' class='row-fluid'>
+
+
+    {% for day, services in dayservice %}
+    <div class='span2'>
+        <h4>{{day|title}}</h4>
+        {% for service in services %}
+            {{service.recipe.name}} {{service.number}}
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+
+    <div class='span1'>
+    </div>
+    <div class='span1'>
+    </div>
 </div>
 
 {% endblock %}

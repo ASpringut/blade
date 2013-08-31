@@ -10,6 +10,6 @@ class RecipeService(models.Model):
     cost_at_serve = models.DecimalField(max_digits=6, decimal_places=2)
 
     def __str__(self):
-        return ' '.join([str(self.recipe), str(self.number)])
+        return ' '.join([str(self.recipe), str(self.number), str(self.date)])
 
 

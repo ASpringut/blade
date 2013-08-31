@@ -2,23 +2,24 @@
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
-
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
 from django.http import HttpResponse
-
 from django.core.exceptions import ObjectDoesNotExist
 
+#import misceleneous models
 from inventory.models import Restaurant, Ingredient
 from recipes.models import Recipe
+from service.models import RecipeService
+
 #import user management models
 from django.contrib.auth.models import User
 from users.models import UserProfile
 
-
 #import our forms
 from users.InputForms import LoginForm, RegisterForm
+
+from datetime import datetime, date, timedelta
 
 # Create your views here.
 def login_view(request):
@@ -138,6 +139,26 @@ def restaurantMain(request):
         recipe_list = []
 
     render_dict["recipes"] = recipe_list
+
+    #dictionary of services by day
+    day_list =[]
+    #get todays date
+    today = date.today()
+    #for the last five days
+    for i in range(5):
+        td = timedelta(days=-1*i)
+        day = today - td
+
+        #get all of the services by day
+        try:
+            service_list = RecipeService.objects.filter(recipe__restaurant=rest.id)
+            service_list = service_list.filter(date = day)
+            #add a list of the day and the services
+            day_list.append((day.strftime('%A'), list(service_list)))
+        except ObjectDoesNotExist:
+            day_list.append((day.strftime('%A'), []))
+
+    render_dict['dayservice']=day_list
 
     
     return render_to_response("main.html",
